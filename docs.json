@@ -1,38 +1,19 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "GAIA AI",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#292524",
+    "light": "#F5F4ED",
+    "dark": "#292524"
   },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "pages": [
-          {
-            "group": "Getting started",
-            "pages": ["index", "quickstart"]
-          },
-          {
-            "group": "Services",
-            "pages": [
-              "knowledge",
-              "custom-tools",
-              "mcp-integration",
-              "local-models"
-            ]
-          }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": []
+  "background": {
+    "color": {
+      "light": "#fff",
+      "dark": "#000"
     }
   },
+  "favicon": "/images/favicon.svg",
   "logo": {
     "light": "/logo/light.png",
     "dark": "/logo/dark.png"
@@ -50,6 +31,149 @@
       "href": "https://github.com/AbdelrahmanAbounida/GAIA-AI"
     }
   },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["index", "quickstart"]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/architecture",
+              "concepts/agents",
+              "concepts/providers"
+            ]
+          },
+          {
+            "group": "Knowledge (RAG)",
+            "pages": [
+              "knowledge/overview",
+              "knowledge/vector-stores",
+              "knowledge/embeddings",
+              "knowledge/document-processing",
+              "knowledge/semantic-search"
+            ]
+          },
+          {
+            "group": "Model Context Protocol (MCP)",
+            "pages": [
+              "mcp/overview",
+              "mcp/available-servers",
+              "mcp/custom-servers",
+              "mcp/configuration"
+            ]
+          },
+          {
+            "group": "Custom Tools",
+            "pages": [
+              "tools/overview",
+              "tools/creating-tools",
+              "tools/tool-execution",
+              "tools/examples"
+            ]
+          },
+          {
+            "group": "Models",
+            "pages": [
+              "models/overview",
+              "models/cloud-providers",
+              "models/ollama-local",
+              "models/configuration"
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "integration/openai-sdk",
+              "integration/vercel-ai-sdk",
+              "integration/rest-api",
+              "integration/streaming"
+            ]
+          },
+          {
+            "group": "Deployment",
+            "pages": [
+              "deployment/docker",
+              "deployment/environment-variables",
+              "deployment/production"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["api-reference/overview", "api-reference/authentication"]
+          },
+          {
+            "group": "AI",
+            "pages": [
+              "api-reference/ai/get-providers",
+              "api-reference/ai/get-models",
+              "api-reference/ai/get-user-models"
+            ]
+          },
+          {
+            "group": "Chat",
+            "pages": [
+              "api-reference/chat/completions",
+              "api-reference/chat/stream",
+              "api-reference/chat/image-generation"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "api-reference/projects/list",
+              "api-reference/projects/create",
+              "api-reference/projects/update",
+              "api-reference/projects/delete"
+            ]
+          },
+          {
+            "group": "Knowledge",
+            "pages": [
+              "api-reference/knowledge/upload",
+              "api-reference/knowledge/search",
+              "api-reference/knowledge/delete"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "api-reference/mcp/list-servers",
+              "api-reference/mcp/add-server",
+              "api-reference/mcp/remove-server"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "api-reference/tools/list",
+              "api-reference/tools/create",
+              "api-reference/tools/execute",
+              "api-reference/tools/delete"
+            ]
+          },
+          {
+            "group": "Credentials",
+            "pages": [
+              "api-reference/credentials/list",
+              "api-reference/credentials/create",
+              "api-reference/credentials/update",
+              "api-reference/credentials/delete"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "contextual": {
     "options": [
       "copy",
@@ -64,9 +188,8 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/AbdelrahmanAbounida/GAIA-AI",
+      "x": "https://x.com/your-handle"
     }
   }
 }

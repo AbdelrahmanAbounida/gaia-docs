@@ -1,0 +1,200 @@
+---
+title: "API Reference"
+description: "Complete API reference for GAIA AI"
+---
+
+## Base URL
+
+```
+http://localhost:3030/api/v1
+```
+
+For production deployments, replace `localhost:3030` with your server address.
+
+## Authentication
+
+All API requests require authentication using a Bearer token in the Authorization header:
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+Get your API key from the GAIA AI dashboard or by running in headless mode.
+
+[Learn more about authentication →](/api-reference/authentication)
+
+## API Groups
+
+<CardGroup cols={2}>
+  <Card title="AI" icon="brain" href="/api-reference/ai/get-providers">
+    Manage AI providers, models, and configurations
+  </Card>
+  
+  <Card title="Chat" icon="messages" href="/api-reference/chat/completions">
+    OpenAI-compatible chat completions and streaming
+  </Card>
+  
+  <Card title="Projects" icon="folder" href="/api-reference/projects/list">
+    Create and manage agent projects
+  </Card>
+  
+  <Card title="Knowledge" icon="book" href="/api-reference/knowledge/upload">
+    Upload, search, and manage knowledge bases
+  </Card>
+  
+  <Card title="MCP" icon="plug" href="/api-reference/mcp/list-servers">
+    Configure Model Context Protocol servers
+  </Card>
+  
+  <Card title="Tools" icon="wrench" href="/api-reference/tools/list">
+    Create and execute custom tools
+  </Card>
+  
+  <Card title="Credentials" icon="key" href="/api-reference/credentials/list">
+    Manage API keys and provider credentials
+  </Card>
+  
+  <Card title="Prompts" icon="message" href="/api-reference/prompts/list">
+    Store and manage reusable prompts
+  </Card>
+</CardGroup>
+
+## OpenAI Compatibility
+
+GAIA AI implements OpenAI-compatible endpoints, allowing you to use existing OpenAI SDKs:
+
+<CodeGroup>
+
+```typescript TypeScript (OpenAI SDK)
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'http://localhost:3030/api/v1/ai/chat',
+  apiKey: process.env.GAIA_API_KEY
+});
+```
+
+```typescript TypeScript (Vercel AI SDK)
+import { createOpenAI } from '@ai-sdk/openai';
+
+const gaia = createOpenAI({
+  baseURL: 'http://localhost:3030/api/v1/ai/chat',
+  apiKey: process.env.GAIA_API_KEY
+});
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:3030/api/v1/ai/chat",
+    api_key="your-api-key"
+)
+```
+
+</CodeGroup>
+
+## Rate Limits
+
+Currently, GAIA AI does not enforce rate limits when self-hosted. For production deployments, consider implementing rate limiting at your reverse proxy or load balancer level.
+
+## Error Handling
+
+All endpoints return standard HTTP status codes:
+
+| Code | Description |
+|------|-------------|
+| 200  | Success |
+| 400  | Bad Request - Invalid parameters |
+| 401  | Unauthorized - Invalid or missing API key |
+| 404  | Not Found - Resource doesn't exist |
+| 500  | Internal Server Error |
+
+Error responses follow this format:
+
+```json
+{
+  "success": false,
+  "message": "Error description",
+  "error": "Detailed error information"
+}
+```
+
+## SDK Examples
+
+### TypeScript with OpenAI SDK
+
+```typescript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'http://localhost:3030/api/v1/ai/chat',
+  apiKey: process.env.GAIA_API_KEY
+});
+
+const completion = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [
+    { role: 'user', content: 'Search our documentation' }
+  ],
+  extra_body: {
+    chatId: 'chat-123'
+  }
+});
+```
+
+### TypeScript with Vercel AI SDK
+
+```typescript
+import { generateText } from 'ai';
+import { createOpenAI } from '@ai-sdk/openai';
+
+const gaia = createOpenAI({
+  baseURL: 'http://localhost:3030/api/v1/ai/chat',
+  apiKey: process.env.GAIA_API_KEY
+});
+
+const { text } = await generateText({
+  model: gaia('gpt-4o'),
+  prompt: 'What is GAIA AI?'
+});
+```
+
+### Python
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:3030/api/v1/ai/chat",
+    api_key="your-api-key"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "user", "content": "Search our documentation"}
+    ],
+    extra_body={"chatId": "chat-123"}
+)
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="lock" href="/api-reference/authentication">
+    Learn how to authenticate your requests
+  </Card>
+  
+  <Card title="Chat Completions" icon="message" href="/api-reference/chat/completions">
+    Start building with the chat API
+  </Card>
+  
+  <Card title="Knowledge Upload" icon="upload" href="/api-reference/knowledge/upload">
+    Add knowledge to your agent
+  </Card>
+  
+  <Card title="Tools" icon="wrench" href="/api-reference/tools/create">
+    Create custom tools
+  </Card>
+</CardGroup>

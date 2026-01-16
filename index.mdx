@@ -1,44 +1,123 @@
 ---
 title: Introduction
-description: "Build Intelligent AI Agents Your Way with GAIA AI"
 ---
 
 <img
-  className="block dark:hidden"
-  src="/images/knowledge.gif"
-  alt="knowledge"
+  className=" dark:hidden mx-auto"
+  src="/images/view-light.png"
+  alt="view"
 />
+
+<img
+  className="hidden dark:block "
+  src="/images/view-dark.png"
+  alt="view"
+/>
+
+GAIA AI is an **open-source platform for building intelligent AI agents** that connect to your data, tools, and 
+<Link target="_blank" href="https://modelcontextprotocol.io/docs/getting-started/intro"> MCPs</Link>. Whether you're building customer support bots, research assistants, or enterprise knowledge systems, GAIA AI gives you full control.
+
+- **Knowledge integration** via RAG (Retrieval-Augmented Generation)
+- **Tool connections** to APIs, databases, and services
+- **MCP integrations** for external system communication
+- **OpenAI-compatible APIs** for seamless integration
+- **Local & Cloud** AI Models Providers
+
+## Why GAIA AI?
+
+<CardGroup cols={2}>
+  <Card title="No Training Required" icon="bolt">
+    Connect AI models to your knowledge base instead of expensive fine-tuning. Update knowledge in real-time without retraining.
+  </Card>
+  <Card title="OpenAI Compatible" icon="code">
+    Use familiar OpenAI SDKs (Python, JavaScript) or AI SDK from Vercel to integrate with your existing stack.
+  </Card>
+  <Card title="Self-Hostable" icon="server">
+    Run entirely on your infrastructure with Docker. Full control over your data and models.
+  </Card>
+  <Card title="Extensible" icon="puzzle-piece">
+    Build custom tools in TypeScript, connect to any vector store, and integrate with MCPs.
+  </Card>
+</CardGroup>
+
+## Core Features
+
+### Knowledge (RAG)
+Search and retrieve information from your documents using semantic search. Support for multiple vector stores and embedding providers.
+
+[Explore Knowledge →](/knowledge/overview)
+
+### Model Context Protocol (MCP)
+Connect your agents to external systems, databases, and APIs through standardized MCP servers.
+
+[Explore MCP →](/mcp/overview)
+
+### Custom Tools
+Design and execute custom tools in TypeScript to extend your agent's capabilities with real-world actions.
+
+[Explore Tools →](/tools/overview)
+
+### OpenAI-Compatible Chat
+Access your configured agents through OpenAI-compatible endpoints. Works with existing OpenAI clients and SDKs.
+
+[Explore API →](/api-reference/chat/completions)
+
+## Quick Example
+
+```typescript
+// Connect to your GAIA AI agent using OpenAI SDK
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'http://localhost:3030/api/v1/ai/chat',
+  apiKey: 'your-api-key'
+});
+
+const response = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [
+    { role: 'user', content: 'Search our documentation for RAG setup' }
+  ]
+});
+```
+
+Your agent automatically searches your knowledge base, uses available tools, and returns contextual responses.
+
+## Getting Started
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get GAIA AI running locally in 5 minutes
+  </Card>
+  <Card title="Docker Setup" icon="docker" href="/deployment/docker" color="#0db7ed">
+    Deploy with Docker for production use
+  </Card>
+
+  <Card title="Connect Models" icon="brain" href="/models/overview">
+    Use cloud providers or run Ollama locally
+  </Card>
+  <Card title="API Reference" icon="book" href="/api-reference/overview">
+    Explore all available endpoints
+  </Card>
+</CardGroup>
+
+---
+
+Ready to build your first AI agent? Start with the [Quick Start Guide](/quickstart).
+
+
+{/* <video
+  controls
+  className="w-full border aspect-video rounded-xl dark:hidden"
+  autoPlay
+  muted
+  loop
+  playsInline
+  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3iEDDg2F1AUC60PVzJWx8qGr5ygcjX4BKDHnN3"
+/>
+
 <img
   className="hidden dark:block"
   src="/images/knowledge.gif"
   alt="knowledge"
-/>
-
-## What is GAIA AI?
-
-GAIA AI is a powerful and flexible **RAG (Retrieval-Augmented Generation) framework** for building intelligent AI agents. It enables you to combine structured & unstructured knowledge, external tools and APIs, MCP-based integrations, and local or hosted AI models—all in one modular, developer-friendly platform.
-
-Whether you're building customer support bots, research assistants, or enterprise knowledge systems, GAIA AI gives you full control.
-
-## Core Capabilities
-
-<CardGroup cols={2}>
-  <Card title="Knowledge Management" icon="book" href="/knowledge">
-    Search, index, and retrieve documents with semantic search, document
-    chunking, and multi-format support
-  </Card>
-  <Card title="Tool Integration" icon="wrench" href="/custom-tools">
-    Let agents interact with real-world tools, APIs, and services with safe
-    execution
-  </Card>
-  <Card title="MCP Integration" icon="plug" href="/mcp-integration">
-    Connect agents to external systems using Model Context Protocol for scalable
-    communication
-  </Card>
-  <Card title="Local Models" icon="server" href="/local-models">
-    Run AI models entirely on your infrastructure with full data ownership and
-    no vendor lock-in
-  </Card>
-</CardGroup>
-
-Ready to start building? Check out the [Quick Start Guide](/quickstart) or explore our [Examples](/examples).
+/> */}

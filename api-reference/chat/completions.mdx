@@ -1,0 +1,225 @@
+---
+title: "Chat Completions"
+api: "POST /ai/chat/completions"
+description: "OpenAI-compatible chat completion endpoint with streaming support"
+---
+
+Create a chat completion with your configured AI agent. This endpoint is fully compatible with OpenAI's API, allowing you to use existing OpenAI SDKs and tools.
+
+## Request Body
+
+<ParamField body="chatId" type="string" required>
+  Chat session identifier for conversation continuity
+</ParamField>
+
+<ParamField body="messages" type="array" required>
+  Array of message objects representing the conversation history
+  
+  <Expandable title="Message Object">
+    <ParamField body="role" type="string" required>
+      Role of the message sender: `system`, `user`, or `assistant`
+    </ParamField>
+    
+    <ParamField body="content" type="string" required>
+      Content of the message
+    </ParamField>
+    
+    <ParamField body="name" type="string">
+      Optional name of the message sender
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="model" type="string" default="gpt-4o">
+  Model identifier to use for completion
+</ParamField>
+
+<ParamField body="provider" type="string">
+  Provider name (e.g., "openai", "anthropic", "ollama")
+</ParamField>
+
+<ParamField body="temperature" type="number" default={0.7}>
+  Sampling temperature between 0 and 2. Higher values make output more random
+</ParamField>
+
+<ParamField body="max_tokens" type="number">
+  Maximum number of tokens to generate
+</ParamField>
+
+<ParamField body="stream" type="boolean" default={false}>
+  Whether to stream the response
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the request was successful
+</ResponseField>
+
+<ResponseField name="id" type="string">
+  Unique identifier for the completion
+</ResponseField>
+
+<ResponseField name="choices" type="array">
+  Array of completion choices
+  
+  <Expandable title="Choice Object">
+    <ResponseField name="message" type="object">
+      The generated message
+      
+      <Expandable title="Message Object">
+        <ResponseField name="role" type="string">
+          Role of the message (always "assistant")
+        </ResponseField>
+        
+        <ResponseField name="content" type="string">
+          Generated content
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+    
+    <ResponseField name="finish_reason" type="string">
+      Reason for completion: "stop", "length", or "tool_calls"
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="usage" type="object">
+  Token usage information
+  
+  <Expandable title="Usage Object">
+    <ResponseField name="prompt_tokens" type="number">
+      Number of tokens in the prompt
+    </ResponseField>
+    
+    <ResponseField name="completion_tokens" type="number">
+      Number of tokens in the completion
+    </ResponseField>
+    
+    <ResponseField name="total_tokens" type="number">
+      Total tokens used
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```typescript TypeScript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  baseURL: 'http://localhost:3030/api/v1/ai/chat',
+  apiKey: process.env.GAIA_API_KEY
+});
+
+const response = await client.chat.completions.create({
+  chatId: 'chat-123',
+  model: 'gpt-4o',
+  messages: [
+    { role: 'system', content: 'You are a helpful assistant.' },
+    { role: 'user', content: 'What is RAG?' }
+  ],
+  temperature: 0.7
+});
+
+console.log(response.choices[0].message.content);
+```
+
+```python Python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:3030/api/v1/ai/chat",
+    api_key="your-api-key"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "What is RAG?"}
+    ],
+    extra_body={"chatId": "chat-123"}
+)
+
+print(response.choices[0].message.content)
+```
+
+```bash cURL
+curl -X POST http://localhost:3030/api/v1/ai/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "chatId": "chat-123",
+    "model": "gpt-4o",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is RAG?"
+      }
+    ],
+    "temperature": 0.7
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 Success
+{
+  "id": "chatcmpl-123",
+  "object": "chat.completion",
+  "created": 1677652288,
+  "model": "gpt-4o",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "RAG stands for Retrieval-Augmented Generation..."
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 20,
+    "completion_tokens": 100,
+    "total_tokens": 120
+  }
+}
+```
+
+```json 401 Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>
+
+## Streaming
+
+Set `stream: true` to receive Server-Sent Events (SSE) instead of a single response:
+
+```typescript
+const stream = await client.chat.completions.create({
+  chatId: 'chat-123',
+  model: 'gpt-4o',
+  messages: [{ role: 'user', content: 'Hello!' }],
+  stream: true
+});
+
+for await (const chunk of stream) {
+  process.stdout.write(chunk.choices[0]?.delta?.content || '');
+}
+```
+
+## Notes
+
+- Your agent will automatically use configured knowledge bases, tools, and MCP servers
+- The `chatId` maintains conversation context and history
+- Compatible with all OpenAI client libraries and tools
