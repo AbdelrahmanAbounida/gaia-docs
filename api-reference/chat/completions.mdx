@@ -14,23 +14,21 @@ Create a chat completion with your configured AI agent. This endpoint is fully c
 
 <ParamField body="messages" type="array" required>
   Array of message objects representing the conversation history
-  
+
   <Expandable title="Message Object">
     <ParamField body="role" type="string" required>
       Role of the message sender: `system`, `user`, or `assistant`
     </ParamField>
-    
     <ParamField body="content" type="string" required>
       Content of the message
     </ParamField>
-    
     <ParamField body="name" type="string">
       Optional name of the message sender
     </ParamField>
   </Expandable>
 </ParamField>
 
-<ParamField body="model" type="string" default="gpt-4o">
+<ParamField body="model" default="gpt-4o" type="string">
   Model identifier to use for completion
 </ParamField>
 
@@ -38,7 +36,7 @@ Create a chat completion with your configured AI agent. This endpoint is fully c
   Provider name (e.g., "openai", "anthropic", "ollama")
 </ParamField>
 
-<ParamField body="temperature" type="number" default={0.7}>
+<ParamField body="temperature" default={0.7} type="number">
   Sampling temperature between 0 and 2. Higher values make output more random
 </ParamField>
 
@@ -46,7 +44,7 @@ Create a chat completion with your configured AI agent. This endpoint is fully c
   Maximum number of tokens to generate
 </ParamField>
 
-<ParamField body="stream" type="boolean" default={false}>
+<ParamField body="stream" default="false" type="boolean">
   Whether to stream the response
 </ParamField>
 
@@ -62,22 +60,20 @@ Create a chat completion with your configured AI agent. This endpoint is fully c
 
 <ResponseField name="choices" type="array">
   Array of completion choices
-  
+
   <Expandable title="Choice Object">
     <ResponseField name="message" type="object">
       The generated message
-      
+
       <Expandable title="Message Object">
         <ResponseField name="role" type="string">
           Role of the message (always "assistant")
         </ResponseField>
-        
         <ResponseField name="content" type="string">
           Generated content
         </ResponseField>
       </Expandable>
     </ResponseField>
-    
     <ResponseField name="finish_reason" type="string">
       Reason for completion: "stop", "length", or "tool_calls"
     </ResponseField>
@@ -86,16 +82,14 @@ Create a chat completion with your configured AI agent. This endpoint is fully c
 
 <ResponseField name="usage" type="object">
   Token usage information
-  
+
   <Expandable title="Usage Object">
     <ResponseField name="prompt_tokens" type="number">
       Number of tokens in the prompt
     </ResponseField>
-    
     <ResponseField name="completion_tokens" type="number">
       Number of tokens in the completion
     </ResponseField>
-    
     <ResponseField name="total_tokens" type="number">
       Total tokens used
     </ResponseField>
@@ -125,6 +119,7 @@ const response = await client.chat.completions.create({
 console.log(response.choices[0].message.content);
 ```
 
+
 ```python Python
 from openai import OpenAI
 
@@ -144,6 +139,7 @@ response = client.chat.completions.create(
 
 print(response.choices[0].message.content)
 ```
+
 
 ```bash cURL
 curl -X POST http://localhost:3030/api/v1/ai/chat/completions \
@@ -191,6 +187,7 @@ curl -X POST http://localhost:3030/api/v1/ai/chat/completions \
   }
 }
 ```
+
 
 ```json 401 Unauthorized
 {
