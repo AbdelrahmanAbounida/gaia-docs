@@ -1,11 +1,12 @@
 ---
-title: Introduction
+title: "Introduction"
 ---
 
 <img
-  className=" dark:hidden mx-auto"
+  className="dark:hidden mx-auto"
   src="/images/view-light.png"
   alt="view"
+  style={{ width:"99%" }}
 />
 
 <img
@@ -14,8 +15,11 @@ title: Introduction
   alt="view"
 />
 
-GAIA AI is an **open-source platform for building intelligent AI agents** that connect to your data, tools, and 
-<Link target="_blank" href="https://modelcontextprotocol.io/docs/getting-started/intro"> MCPs</Link>. Whether you're building customer support bots, research assistants, or enterprise knowledge systems, GAIA AI gives you full control.
+GAIA AI is an **open-source platform for building intelligent AI agents** that connect to your data, tools, and <Link target="_blank" href="https://modelcontextprotocol.io/docs/getting-started/intro">
+   MCPs
+</Link>
+
+. Whether you're building customer support bots, research assistants, or enterprise knowledge systems, GAIA AI gives you full control.
 
 - **Knowledge integration** via RAG (Retrieval-Augmented Generation)
 - **Tool connections** to APIs, databases, and services
@@ -43,21 +47,25 @@ GAIA AI is an **open-source platform for building intelligent AI agents** that c
 ## Core Features
 
 ### Knowledge (RAG)
+
 Search and retrieve information from your documents using semantic search. Support for multiple vector stores and embedding providers.
 
 [Explore Knowledge →](/knowledge/overview)
 
 ### Model Context Protocol (MCP)
+
 Connect your agents to external systems, databases, and APIs through standardized MCP servers.
 
 [Explore MCP →](/mcp/overview)
 
 ### Custom Tools
+
 Design and execute custom tools in TypeScript to extend your agent's capabilities with real-world actions.
 
 [Explore Tools →](/tools/overview)
 
 ### OpenAI-Compatible Chat
+
 Access your configured agents through OpenAI-compatible endpoints. Works with existing OpenAI clients and SDKs.
 
 [Explore API →](/api-reference/chat/completions)
@@ -89,10 +97,9 @@ Your agent automatically searches your knowledge base, uses available tools, and
   <Card title="Quick Start" icon="rocket" href="/quickstart">
     Get GAIA AI running locally in 5 minutes
   </Card>
-  <Card title="Docker Setup" icon="docker" href="/deployment/docker" color="#0db7ed">
+  <Card title="Docker Setup" icon="docker" color="#0db7ed" href="/deployment/docker">
     Deploy with Docker for production use
   </Card>
-
   <Card title="Connect Models" icon="brain" href="/models/overview">
     Use cloud providers or run Ollama locally
   </Card>
@@ -105,19 +112,18 @@ Your agent automatically searches your knowledge base, uses available tools, and
 
 Ready to build your first AI agent? Start with the [Quick Start Guide](/quickstart).
 
-
 {/* <video
-  controls
-  className="w-full border aspect-video rounded-xl dark:hidden"
-  autoPlay
-  muted
-  loop
-  playsInline
-  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3iEDDg2F1AUC60PVzJWx8qGr5ygcjX4BKDHnN3"
+controls
+className="w-full border aspect-video rounded-xl dark:hidden"
+autoPlay
+muted
+loop
+playsInline
+src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3iEDDg2F1AUC60PVzJWx8qGr5ygcjX4BKDHnN3"
 />
 
 <img
-  className="hidden dark:block"
-  src="/images/knowledge.gif"
-  alt="knowledge"
+className="hidden dark:block"
+src="/images/knowledge.gif"
+alt="knowledge"
 /> */}
