@@ -1,0 +1,71 @@
+---
+title: AI SDK
+description: "Using Vercel AI SDK with GAIA"
+---
+# Vercel AI SDK Integration
+
+Use GAIA with the [Vercel AI SDK](https://sdk.vercel.ai) for React streaming and UI components.
+
+## Installation
+```bash
+npm install ai
+```
+
+## Configuration
+
+Create an OpenAI provider pointing to GAIA:
+```typescript
+import { createOpenAI } from '@ai-sdk/openai';
+
+const gaia = createOpenAI({
+  baseURL: 'http://localhost:3000/api/v1',
+  apiKey: 'gaia_your_api_key'
+});
+```
+
+## Server-Side Usage
+```typescript
+import { streamText } from 'ai';
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+
+  const result = await streamText({
+    model: gaia('proj_abc123'), // your project ID
+    messages
+  });
+
+  return result.toDataStreamResponse();
+}
+```
+
+## Client-Side (React)
+```tsx
+'use client';
+import { useChat } from 'ai/react';
+
+export default function Chat() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: '/api/chat'
+  });
+
+  return (
+    <div>
+      {messages.map(m => (
+        <div key={m.id}>
+          <strong>{m.role}:</strong> {m.content}
+        </div>
+      ))}
+      
+      <form onSubmit={handleSubmit}>
+        <input value={input} onChange={handleInputChange} />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  );
+}
+```
+
+Your agent's knowledge and tools work automatically with streaming responses.
+
+See [Vercel AI SDK docs](https://sdk.vercel.ai/docs) for more patterns.

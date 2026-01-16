@@ -1,0 +1,43 @@
+---
+title: AI Models
+description: "Deep dive on connecting different model providers"
+---
+
+GAIA supports multiple AI providers through a unified interface.
+
+## Supported Providers
+
+### Cloud Providers
+- **OpenAI** (GPT-4, GPT-3.5, etc.)
+- **Anthropic** (Claude models)
+- **Google** (Gemini)
+- **Azure OpenAI**
+- **Groq**
+- [See full list in API Reference](/api-reference/ai/get-providers)
+
+### Local Models
+- **Ollama** - Run models like Llama, Mistral locally
+- **LM Studio** - Use any GGUF model
+- **Custom Endpoints** - Any OpenAI-compatible API
+
+## Configuration
+
+### Via UI
+Settings → AI Models → Select Provider → Enter credentials
+
+### Via API
+```typescript
+// Set model for a project
+POST /api/projects/{id}
+{
+  "model": "gpt-4",
+  "provider": "openai",
+  "credentials": { "apiKey": "sk-..." }
+}
+```
+
+See [API Reference](/api-reference/ai/get-models) for full details.
+
+## Using Multiple Models
+
+You can switch models per project or per conversation. Each agent can use a different model.

@@ -1,0 +1,59 @@
+---
+title: Tools Design
+description: "Creating and using tools"
+---
+
+Give your agents abilities to perform actions like calling APIs, querying databases, or running code.
+
+## Built-in Tools
+
+GAIA includes ready-to-use tools:
+- Web search
+- Calculator
+- File operations
+- Email sending
+- [See all built-in tools]
+
+## Custom Tools
+
+Create tools in TypeScript:
+```typescript
+// tools/weather.ts
+export default {
+  name: "get_weather",
+  description: "Get current weather for a location",
+  parameters: {
+    type: "object",
+    properties: {
+      location: { type: "string" }
+    },
+    required: ["location"]
+  },
+  execute: async ({ location }) => {
+    const res = await fetch(`https://api.weather.com?q=${location}`);
+    return await res.json();
+  }
+}
+```
+
+## Using Tools
+
+### Via UI
+1. Go to your project → Tools tab
+2. Enable built-in tools or upload custom ones
+3. Your agent can now call these tools
+
+### Via API
+```typescript
+POST /api/tools/create
+{
+  "projectId": "proj_123",
+  "name": "get_weather",
+  "schema": { ... },
+  "code": "..."
+}
+```
+
+The AI automatically decides when to use tools based on the conversation.
+
+See [API Reference](/api-reference/tools/create) for details.

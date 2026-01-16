@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "GAIA AI",
   "colors": {
-    "primary": "#292524",
-    "light": "#F5F4ED",
-    "dark": "#292524"
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
   },
   "background": {
     "color": {
@@ -34,72 +34,33 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Guide",
         "groups": [
           {
             "group": "Getting Started",
             "pages": ["index", "quickstart"]
           },
           {
-            "group": "Core Concepts",
+            "group": "Core Features",
             "pages": [
-              "concepts/architecture",
-              "concepts/agents",
-              "concepts/providers"
+              "features/ai-models",
+              "features/knowledge-rag",
+              "features/tools",
+              "features/mcp"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Integration",
+        "groups": [
           {
-            "group": "Knowledge (RAG)",
+            "group": "Connect To Your Agent",
             "pages": [
-              "knowledge/overview",
-              "knowledge/vector-stores",
-              "knowledge/embeddings",
-              "knowledge/document-processing",
-              "knowledge/semantic-search"
-            ]
-          },
-          {
-            "group": "Model Context Protocol (MCP)",
-            "pages": [
-              "mcp/overview",
-              "mcp/available-servers",
-              "mcp/custom-servers",
-              "mcp/configuration"
-            ]
-          },
-          {
-            "group": "Custom Tools",
-            "pages": [
-              "tools/overview",
-              "tools/creating-tools",
-              "tools/tool-execution",
-              "tools/examples"
-            ]
-          },
-          {
-            "group": "Models",
-            "pages": [
-              "models/overview",
-              "models/cloud-providers",
-              "models/ollama-local",
-              "models/configuration"
-            ]
-          },
-          {
-            "group": "Integration",
-            "pages": [
+              "integration/overview",
               "integration/openai-sdk",
               "integration/vercel-ai-sdk",
-              "integration/rest-api",
-              "integration/streaming"
-            ]
-          },
-          {
-            "group": "Deployment",
-            "pages": [
-              "deployment/docker",
-              "deployment/environment-variables",
-              "deployment/production"
+              "integration/rest-api"
             ]
           }
         ]

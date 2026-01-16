@@ -1,0 +1,49 @@
+---
+title: MCP Connection
+description: "Connecting to different MCP servers"
+---
+# MCP Integration
+
+Connect to [Model Context Protocol](https://modelcontextprotocol.io) servers to extend your agents.
+
+## What is MCP?
+
+MCP lets AI agents interact with external systems through a standardized protocol. Think of it as giving your agent access to tools and data from other services.
+
+## Available MCP Servers
+
+Popular MCP servers:
+- **GitHub** - Repository access
+- **Slack** - Message and channel operations
+- **Google Drive** - File management
+- **PostgreSQL** - Database queries
+- [Browse more on MCP Hub](https://github.com/modelcontextprotocol/servers)
+
+## Connecting MCP Servers
+
+### Via UI
+1. Go to Settings → MCP Servers
+2. Click "Add Server"
+3. Enter server details:
+   - Name
+   - Command to run (e.g., `npx @modelcontextprotocol/server-github`)
+   - Environment variables (API keys, etc.)
+4. Save and enable for your projects
+
+### Via API
+```typescript
+POST /api/mcp/add-server
+{
+  "name": "GitHub",
+  "command": "npx @modelcontextprotocol/server-github",
+  "env": {
+    "GITHUB_TOKEN": "ghp_..."
+  }
+}
+```
+
+## Using MCP Tools
+
+Once connected, MCP tools appear in your agent's available tools. The AI automatically uses them when needed.
+
+See [API Reference](/api-reference/mcp/add-server) for details.

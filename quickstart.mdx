@@ -2,6 +2,53 @@
 title: Quick Start
 description: "Get started with GAIA AI in minutes using either pnpm or Docker."
 ---
+## Choose Your AI Model
+
+<Tabs>
+  <Tab title="Local (Ollama)">
+    **Prerequisites:** [Install Ollama](https://ollama.ai) and pull a model:
+```bash
+    ollama pull llama3
+```
+    
+    **In GAIA:**
+    1. Go to Settings → AI Models
+    2. Select "Ollama" provider
+    3. Choose your model (e.g., llama3)
+    4. Save
+  </Tab>
+  
+  <Tab title="Cloud (OpenAI, Anthropic, etc.)">
+    **Prerequisites:** API key from your provider
+    
+    **In GAIA:**
+    1. Go to Settings → AI Models
+    2. Select your provider (OpenAI, Anthropic, Google, etc.)
+    3. Enter your API key
+    4. Choose a model
+    5. Save
+  </Tab>
+  
+  <Tab title="Custom OpenAI-Compatible">
+    **For:** LM Studio, vLLM, or any OpenAI-compatible endpoint
+    
+    **In GAIA:**
+    1. Go to Settings → AI Models
+    2. Select "Custom OpenAI Compatible"
+    3. Enter base URL (e.g., `http://localhost:1234/v1`)
+    4. Enter API key (if required)
+    5. Choose/enter model name
+    6. Save
+  </Tab>
+</Tabs>
+
+## Create Your First Agent
+
+1. **Create Project:** Click "New Project" and name it (e.g., "My Assistant")
+2. **Add Knowledge (Optional):** Upload documents in the Knowledge tab
+3. **Add Tools (Optional):** Connect APIs or enable built-in tools
+4. **Chat:** Start chatting with your agent!
+
 
 ## Prerequisites
 
@@ -45,3 +92,112 @@ docker-compose up
 ```
 
 The application will be available at `http://localhost:3000`
+
+
+
+
+---
+title: "Docker"
+---
+# Docker Deployment
+
+Deploy GAIA in production using Docker.
+
+## Quick Start
+```bash
+docker run -p 3000:3000 \
+  -e OPENAI_API_KEY=sk-... \
+  gaiaai/gaia:latest
+```
+
+## Docker Compose
+```yaml
+version: '3.8'
+
+services:
+  gaia:
+    image: gaiaai/gaia:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://...
+      - REDIS_URL=redis://...
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+```
+
+# Environment Variables
+
+Configure GAIA through environment variables.
+
+## Core Settings
+```bash
+NODE_ENV=production          # production | development
+PORT=3000                    # Server port
+HEADLESS=false              # true for API-only mode
+```
+
+## AI Providers
+```bash
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_API_KEY=...
+```
+
+## Database
+```bash
+DATABASE_URL=postgresql://user:pass@host:5432/db
+```
+
+## Vector Stores
+```bash
+# Pinecone
+PINECONE_API_KEY=...
+PINECONE_ENVIRONMENT=us-east-1
+
+# Qdrant
+QDRANT_URL=http://localhost:6333
+QDRANT_API_KEY=...
+```
+
+## Storage
+```bash
+# For file uploads
+STORAGE_PATH=./data
+MAX_UPLOAD_SIZE=10mb
+```
+
+## Authentication
+```bash
+JWT_SECRET=your-secret-key
+API_KEY_PREFIX=gaia_
+```
+
+## Example .env
+```bash
+NODE_ENV=production
+PORT=3000
+OPENAI_API_KEY=sk-...
+DATABASE_URL=postgresql://...
+PINECONE_API_KEY=...
+JWT_SECRET=random-secret
+```
+
+Copy `.env.example` and customize for your setup.
+
+## Persistence
+
+Mount volumes for:
+- `/app/data` - Local vector stores, file uploads
+- `/app/logs` - Application logs
+
+## Scaling
+
+For multiple instances, use external:
+- **Database** (PostgreSQL)
+- **Vector Store** (Pinecone, Qdrant)
+- **Cache** (Redis)
+
+Configure via environment variables.

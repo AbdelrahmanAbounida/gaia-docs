@@ -28,81 +28,33 @@ GAIA AI is an **open-source platform for building intelligent AI agents** that c
 ## Why GAIA AI?
 
 <CardGroup cols={2}>
-  <Card title="No Training Required" icon="bolt">
-    Connect AI models to your knowledge base instead of expensive fine-tuning. Update knowledge in real-time without retraining.
+  <Card title="Universal LLM Integration" icon="plug">
+    Connect to 10+ AI providers (OpenAI, Anthropic, local models) through one unified interface. No need to rewrite code when providers change.
   </Card>
-  <Card title="OpenAI Compatible" icon="code">
-    Use familiar OpenAI SDKs (Python, JavaScript) or AI SDK from Vercel to integrate with your existing stack.
+  <Card title="Flexible RAG Engine" icon="database">
+    Built-in connections to vector stores (Pinecone, Qdrant, LanceDB, FAISS, ..) and full-text search (FlexSearch, MiniSearch, Orama). And customize retrieval parameters for your use case.
   </Card>
-  <Card title="Self-Hostable" icon="server">
-    Run entirely on your infrastructure with Docker. Full control over your data and models.
+  <Card title="Agent Builder" icon="robot">
+    Compose agents from data sources, custom tools, and MCP integrations. Mix and match components to build exactly what you need.
   </Card>
-  <Card title="Extensible" icon="puzzle-piece">
-    Build custom tools in TypeScript, connect to any vector store, and integrate with MCPs.
+  <Card title="OpenAI-Compatible API" icon="openai">
+    Build your agent once, then access it headlessly via OpenAI SDK or Vercel AI SDK. Deploy anywhere with full API compatibility.
   </Card>
 </CardGroup>
 
-## Core Features
 
-### Knowledge (RAG)
-
-Search and retrieve information from your documents using semantic search. Support for multiple vector stores and embedding providers.
-
-[Explore Knowledge →](/knowledge/overview)
-
-### Model Context Protocol (MCP)
-
-Connect your agents to external systems, databases, and APIs through standardized MCP servers.
-
-[Explore MCP →](/mcp/overview)
-
-### Custom Tools
-
-Design and execute custom tools in TypeScript to extend your agent's capabilities with real-world actions.
-
-[Explore Tools →](/tools/overview)
-
-### OpenAI-Compatible Chat
-
-Access your configured agents through OpenAI-compatible endpoints. Works with existing OpenAI clients and SDKs.
-
-[Explore API →](/api-reference/chat/completions)
-
-## Quick Example
-
-```typescript
-// Connect to your GAIA AI agent using OpenAI SDK
-import OpenAI from 'openai';
-
-const client = new OpenAI({
-  baseURL: 'http://localhost:3030/api/v1/ai/chat',
-  apiKey: 'your-api-key'
-});
-
-const response = await client.chat.completions.create({
-  model: 'gpt-4o',
-  messages: [
-    { role: 'user', content: 'Search our documentation for RAG setup' }
-  ]
-});
-```
-
-Your agent automatically searches your knowledge base, uses available tools, and returns contextual responses.
 
 ## Getting Started
 
-<CardGroup cols={2}>
-  <Card title="Quick Start" icon="rocket" href="/quickstart">
-    Get GAIA AI running locally in 5 minutes
+<CardGroup cols={3}>
+  <Card title="Installation" icon="docker" color="#0db7ed" href="/installation">
+    Local dev or Docker setup
   </Card>
-  <Card title="Docker Setup" icon="docker" color="#0db7ed" href="/deployment/docker">
-    Deploy with Docker for production use
+  <Card title="Quick Start" icon="rocket" color="#1f7a53" href="/quickstart">
+    Build your first agent in 5 minutes
   </Card>
-  <Card title="Connect Models" icon="brain" href="/models/overview">
-    Use cloud providers or run Ollama locally
-  </Card>
-  <Card title="API Reference" icon="book" href="/api-reference/overview">
-    Explore all available endpoints
+  <Card title="Headless Mode" icon="terminal" color="oklch(63.7% 0.237 25.331)" href="/usage/headless-mode">
+    Use GAIA via API only
   </Card>
 </CardGroup>
 

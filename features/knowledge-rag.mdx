@@ -1,0 +1,54 @@
+---
+title: Knowledge & RAG
+description: "How to add knowledge and configure RAG"
+---
+
+Add documents, websites, or databases to your agents using Retrieval-Augmented Generation.
+
+## Vector Stores
+
+Choose where to store embeddings:
+
+### Local Options
+- **FAISS** - Fast, in-memory (default for local dev)
+- **LanceDB** - Persistent, serverless
+
+### Cloud Options
+- **Pinecone** - Managed, scalable
+- **Qdrant** - Self-hosted or cloud
+
+## Full-Text Search
+
+For keyword-based search:
+- **FlexSearch**
+- **MiniSearch**
+- **Orama**
+
+## Adding Knowledge
+
+### Via UI
+1. Go to your project → Knowledge tab
+2. Upload files (PDF, TXT, MD, DOCX)
+3. Or enter URLs to scrape
+4. GAIA automatically chunks and embeds
+
+### Via API
+```typescript
+POST /api/knowledge/upload
+{
+  "projectId": "proj_123",
+  "file": <file>,
+  "chunkSize": 1000,
+  "chunkOverlap": 200
+}
+```
+
+## Advanced Configuration
+
+Customize RAG parameters:
+- **Chunk size** - How to split documents
+- **Top K** - Number of results to retrieve
+- **Similarity threshold** - Minimum relevance score
+- **Embedding model** - Which model to use for embeddings
+
+See [API Reference](/api-reference/knowledge/upload) for all options.

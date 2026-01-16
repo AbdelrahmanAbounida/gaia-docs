@@ -1,0 +1,95 @@
+---
+title: OpenAI API
+description: "Using OpenAI SDK with GAIA"
+---
+Use GAIA with the official OpenAI SDK (Python or JavaScript).
+
+## Installation
+
+<Tabs>
+  <Tab title="JavaScript">
+```bash
+    npm install openai
+```
+  </Tab>
+  <Tab title="Python">
+```bash
+    pip install openai
+```
+  </Tab>
+</Tabs>
+
+## Configuration
+
+Point the SDK to GAIA:
+
+<Tabs>
+  <Tab title="JavaScript">
+```typescript
+    import OpenAI from 'openai';
+
+    const client = new OpenAI({
+      baseURL: 'http://localhost:3000/api/v1',
+      apiKey: 'gaia_your_api_key'
+    });
+```
+  </Tab>
+  <Tab title="Python">
+```python
+    from openai import OpenAI
+
+    client = OpenAI(
+      base_url="http://localhost:3000/api/v1",
+      api_key="gaia_your_api_key"
+    )
+```
+  </Tab>
+</Tabs>
+
+## Usage
+
+Use your project ID as the model:
+
+<Tabs>
+  <Tab title="JavaScript">
+```typescript
+    const completion = await client.chat.completions.create({
+      model: "proj_abc123", // your GAIA project ID
+      messages: [
+        { role: "user", content: "What's in my knowledge base?" }
+      ]
+    });
+
+    console.log(completion.choices[0].message.content);
+```
+  </Tab>
+  <Tab title="Python">
+```python
+    completion = client.chat.completions.create(
+      model="proj_abc123",
+      messages=[
+        {"role": "user", "content": "What's in my knowledge base?"}
+      ]
+    )
+
+    print(completion.choices[0].message.content)
+```
+  </Tab>
+</Tabs>
+
+## Streaming
+```typescript
+const stream = await client.chat.completions.create({
+  model: "proj_abc123",
+  messages: [{ role: "user", content: "Hello!" }],
+  stream: true
+});
+
+for await (const chunk of stream) {
+  process.stdout.write(chunk.choices[0]?.delta?.content || '');
+}
+```
+
+Your agent automatically uses its configured knowledge, tools, and MCPs.
+
+See [API Reference](/api-reference/chat/completions) for all parameters.
