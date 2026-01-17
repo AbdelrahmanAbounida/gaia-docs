@@ -1,0 +1,130 @@
+---
+title: "Create and Index Document"
+api: "POST /api/knowledge/documents"
+description: "Creates a new document and indexes it in the vector store"
+---
+
+## Request Body
+
+<ParamField body="projectId" type="string" required>
+  Project ID to associate the document with
+</ParamField>
+
+<ParamField body="fileName" type="string" required>
+  Name of the file/document
+</ParamField>
+
+<ParamField body="fileType" type="string" required>
+  Type of file (e.g., `pdf`, `txt`, `md`, `docx`)
+</ParamField>
+
+<ParamField body="sourceType" type="string" required>
+  Source type of the document (e.g., `upload`, `url`, `integration`)
+</ParamField>
+
+<ParamField body="content" type="string" required>
+  Content of the document to be indexed
+</ParamField>
+
+<ParamField body="fileId" type="string">
+  Optional file ID if document is linked to a file
+</ParamField>
+
+## Response
+
+<ResponseField name="status" type="string">
+  Processing status: `processing`, `completed`, or `failed`
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Status message or error details
+</ResponseField>
+
+<ResponseField name="documentId" type="string">
+  Unique identifier for the created document
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.example.com/api/knowledge/documents \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "projectId": "proj_123",
+    "fileName": "product-guide.pdf",
+    "fileType": "pdf",
+    "sourceType": "upload",
+    "content": "Complete product documentation content..."
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.example.com/api/knowledge/documents', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    projectId: 'proj_123',
+    fileName: 'product-guide.pdf',
+    fileType: 'pdf',
+    sourceType: 'upload',
+    content: 'Complete product documentation content...'
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.example.com/api/knowledge/documents',
+    headers={
+        'Authorization': 'Bearer YOUR_API_KEY',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'projectId': 'proj_123',
+        'fileName': 'product-guide.pdf',
+        'fileType': 'pdf',
+        'sourceType': 'upload',
+        'content': 'Complete product documentation content...'
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "status": "completed",
+  "message": "Document indexed successfully",
+  "documentId": "doc_abc123xyz"
+}
+```
+
+```json Processing Response
+{
+  "status": "processing",
+  "message": "Document is being indexed",
+  "documentId": "doc_abc123xyz"
+}
+```
+
+```json Error Response
+{
+  "status": "failed",
+  "message": "Failed to index document: invalid content format",
+  "documentId": null
+}
+```
+
+</ResponseExample>

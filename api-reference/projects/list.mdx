@@ -1,0 +1,128 @@
+---
+title: "List Projects"
+api: "GET /api/v1/projects"
+description: "Retrieves all projects for the authenticated user with optional search and pagination"
+---
+
+## Query Parameters
+
+<ParamField query="searchWord" type="string">
+  Search term for filtering projects by name
+</ParamField>
+
+<ParamField query="limit" type="number" default={20}>
+  Number of results per page
+</ParamField>
+
+<ParamField query="cursor" type="string" default="">
+  Pagination cursor
+</ParamField>
+
+<ParamField query="offset" type="number" default={0}>
+  Pagination offset
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the request was successful
+</ResponseField>
+
+<ResponseField name="projects" type="array">
+  Array of project objects
+</ResponseField>
+
+<ResponseField name="nextCursor" type="string">
+  Cursor for the next page of results
+</ResponseField>
+
+<ResponseField name="nextOffset" type="number">
+  Offset for the next page of results
+</ResponseField>
+
+<ResponseField name="hasMore" type="boolean">
+  Indicates if there are more results available
+</ResponseField>
+
+<ResponseField name="total" type="number">
+  Total number of projects
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Response message
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/projects?limit=20&offset=0&searchWord=AI' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:3000/api/v1/projects?limit=20&offset=0&searchWord=AI', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer <token>'
+  }
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/projects"
+headers = {"Authorization": "Bearer <token>"}
+params = {
+    "limit": 20,
+    "offset": 0,
+    "searchWord": "AI"
+}
+
+response = requests.get(url, headers=headers, params=params)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "projects": [
+    {
+      "id": "proj_123abc",
+      "name": "AI Chatbot",
+      "description": "Customer service chatbot",
+      "icon": "🤖",
+      "color": "#3B82F6",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "nextCursor": "cursor_xyz",
+  "nextOffset": 20,
+  "hasMore": true,
+  "total": 45,
+  "message": "Projects retrieved successfully"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+- Use `searchWord` to filter projects by name
+- Supports both cursor-based and offset-based pagination
+- Results are ordered by creation date (newest first)

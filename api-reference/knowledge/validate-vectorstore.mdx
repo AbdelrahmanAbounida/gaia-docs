@@ -1,0 +1,124 @@
+---
+title: "Validate Vectorstore Configuration"
+api: "POST /api/knowledge/validate-vectorstore"
+description: "Validates vector store API key and configuration before saving"
+---
+
+## Request Body
+
+<ParamField body="vectorstoreProvider" type="string" required>
+  Vector store provider name (e.g., `pinecone`, `weaviate`, `qdrant`, `chroma`)
+</ParamField>
+
+<ParamField body="vectorStoreConfig" type="object" required>
+  Configuration object containing provider-specific settings
+  <Expandable title="Configuration Object">
+    <ParamField body="apiKey" type="string">
+      API key for the vector store
+    </ParamField>
+    <ParamField body="environment" type="string">
+      Environment or region (provider-specific)
+    </ParamField>
+    <ParamField body="indexName" type="string">
+      Index or collection name
+    </ParamField>
+    <ParamField body="endpoint" type="string">
+      Custom endpoint URL (if applicable)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Response
+
+<ResponseField name="isValid" type="boolean">
+  Whether the configuration is valid and connection successful
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Validation result message or error details
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.example.com/api/knowledge/validate-vectorstore \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vectorstoreProvider": "pinecone",
+    "vectorStoreConfig": {
+      "apiKey": "pc-xxxxxxxxxxxxx",
+      "environment": "us-east-1",
+      "indexName": "my-index"
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.example.com/api/knowledge/validate-vectorstore', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    vectorstoreProvider: 'pinecone',
+    vectorStoreConfig: {
+      apiKey: 'pc-xxxxxxxxxxxxx',
+      environment: 'us-east-1',
+      indexName: 'my-index'
+    }
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.example.com/api/knowledge/validate-vectorstore',
+    headers={
+        'Authorization': 'Bearer YOUR_API_KEY',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'vectorstoreProvider': 'pinecone',
+        'vectorStoreConfig': {
+            'apiKey': 'pc-xxxxxxxxxxxxx',
+            'environment': 'us-east-1',
+            'indexName': 'my-index'
+        }
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Valid Configuration
+{
+  "isValid": true,
+  "message": "Connection successful. Vector store is ready to use."
+}
+```
+
+```json Invalid Configuration
+{
+  "isValid": false,
+  "message": "Authentication failed: Invalid API key"
+}
+```
+
+```json Connection Error
+{
+  "isValid": false,
+  "message": "Failed to connect to vector store: Index 'my-index' does not exist"
+}
+```
+
+</ResponseExample>

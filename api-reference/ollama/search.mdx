@@ -1,0 +1,146 @@
+---
+title: "Search Models"
+api: "GET /api/v1/ollama/search"
+description: "Search for available Ollama models with optional filtering and sorting"
+---
+
+## Query Parameters
+
+<ParamField query="query" type="string" default="">
+  Search query string
+</ParamField>
+
+<ParamField query="categories" type="array">
+  Filter by model categories
+  
+  <Expandable title="Available categories">
+    - `embedding` - Embedding models
+    - `cloud` - Cloud-optimized models
+    - `vision` - Vision/multimodal models
+    - `tools` - Tool-use models
+    - `thinking` - Reasoning models
+  </Expandable>
+</ParamField>
+
+<ParamField query="order" type="string" default="newest">
+  Sort order for results
+  - `newest` - Sort by newest first
+  - `popular` - Sort by popularity (downloads)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the search was successful
+</ResponseField>
+
+<ResponseField name="models" type="array">
+  Array of model objects matching the search criteria
+  
+  <Expandable title="model properties">
+    <ResponseField name="name" type="string">
+      Model name
+    </ResponseField>
+    
+    <ResponseField name="description" type="string">
+      Model description
+    </ResponseField>
+    
+    <ResponseField name="tags" type="array">
+      Array of model tags
+    </ResponseField>
+    
+    <ResponseField name="downloads" type="number">
+      Number of downloads
+    </ResponseField>
+    
+    <ResponseField name="lastUpdated" type="string">
+      Last updated timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/search?query=llama&order=popular&categories=tools' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:3000/api/v1/ollama/search?query=llama&order=popular&categories=tools',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer <token>'
+    }
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/search"
+headers = {"Authorization": "Bearer <token>"}
+params = {
+    "query": "llama",
+    "order": "popular",
+    "categories": ["tools"]
+}
+
+response = requests.get(url, headers=headers, params=params)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "models": [
+    {
+      "name": "llama2",
+      "description": "Meta's Llama 2 model for general chat and text generation",
+      "tags": ["chat", "7b", "13b", "70b"],
+      "downloads": 5420000,
+      "lastUpdated": "2024-01-10T15:30:00Z"
+    },
+    {
+      "name": "llama2-uncensored",
+      "description": "Uncensored version of Llama 2",
+      "tags": ["chat", "uncensored"],
+      "downloads": 890000,
+      "lastUpdated": "2024-01-08T10:00:00Z"
+    }
+  ]
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "error": "Search failed"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+- Leave `query` empty to browse all models
+- Multiple categories can be specified to filter results
+- Results are paginated automatically by the Ollama registry

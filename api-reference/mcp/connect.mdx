@@ -1,0 +1,99 @@
+---
+title: "Connect to MCP Server"
+api: "POST /api/mcp/connect"
+description: "Establishes connection to an MCP server and retrieves capabilities"
+---
+
+## Request Body
+
+<ParamField body="id" type="string" required>
+  MCP server ID to connect
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Whether the connection was successful
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Status message
+</ResponseField>
+
+<ResponseField name="capabilities" type="object">
+  Server capabilities including available tools, resources, and prompts
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.example.com/api/mcp/connect \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "mcp_abc123"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.example.com/api/mcp/connect', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: 'mcp_abc123'
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.example.com/api/mcp/connect',
+    headers={
+        'Authorization': 'Bearer YOUR_API_KEY',
+        'Content-Type': 'application/json'
+    },
+    json={'id': 'mcp_abc123'}
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "success": true,
+  "message": "Connected successfully",
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": true,
+    "experimental": {}
+  }
+}
+```
+
+```json Connection Failed
+{
+  "success": false,
+  "message": "Connection failed: timeout"
+}
+```
+
+```json Not Found
+{
+  "success": false,
+  "message": "Server not found"
+}
+```
+
+</ResponseExample>

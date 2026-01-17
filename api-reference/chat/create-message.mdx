@@ -1,0 +1,180 @@
+---
+title: "Create Message"
+api: "POST /api/chats/{chatId}/messages"
+description: "Creates a new message in a specific chat"
+---
+
+## Path Parameters
+
+<ParamField path="chatId" type="string" required>
+  Chat ID where the message will be created
+</ParamField>
+
+## Body Parameters
+
+<ParamField body="id" type="string">
+  Optional message ID
+</ParamField>
+
+<ParamField body="chatId" type="string" required>
+  Chat ID (must match path parameter)
+</ParamField>
+
+<ParamField body="role" type="string" required>
+  Message role (e.g., "user", "assistant", "system")
+</ParamField>
+
+<ParamField body="parts" type="array" required>
+  Array of message parts
+  
+  <Expandable title="parts properties">
+    <ParamField body="type" type="string" required>
+      Part type (e.g., "text")
+    </ParamField>
+    
+    <ParamField body="text" type="string">
+      Text content of the part
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="attachments" type="array">
+  Array of attachment IDs (strings)
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Additional metadata for the message
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the message was created successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<ResponseField name="data" type="object">
+  The created message object
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.yourdomain.com/api/chats/chat_123abc/messages \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "chatId": "chat_123abc",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello, how can you help me today?"
+      }
+    ],
+    "attachments": [],
+    "metadata": {
+      "source": "web"
+    }
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.yourdomain.com/api/chats/chat_123abc/messages', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    chatId: "chat_123abc",
+    role: "user",
+    parts: [
+      {
+        type: "text",
+        text: "Hello, how can you help me today?"
+      }
+    ],
+    attachments: [],
+    metadata: {
+      source: "web"
+    }
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "https://api.yourdomain.com/api/chats/chat_123abc/messages"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "chatId": "chat_123abc",
+    "role": "user",
+    "parts": [
+        {
+            "type": "text",
+            "text": "Hello, how can you help me today?"
+        }
+    ],
+    "attachments": [],
+    "metadata": {
+        "source": "web"
+    }
+}
+
+response = requests.post(url, headers=headers, json=payload)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "message": "Message created successfully",
+  "data": {
+    "id": "msg_456def",
+    "chatId": "chat_123abc",
+    "role": "user",
+    "parts": [
+      {
+        "type": "text",
+        "text": "Hello, how can you help me today?"
+      }
+    ],
+    "attachments": [],
+    "metadata": {
+      "source": "web"
+    },
+    "createdAt": "2024-01-17T10:30:00Z"
+  }
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+```json 404 - Not Found
+{
+  "success": false,
+  "message": "Chat not found"
+}
+```
+
+</ResponseExample>

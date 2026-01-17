@@ -1,0 +1,125 @@
+---
+title: "Create Project"
+api: "POST /api/v1/projects"
+description: "Creates a new project for the authenticated user"
+---
+
+## Body Parameters
+
+<ParamField body="name" type="string" required>
+  Project name
+</ParamField>
+
+<ParamField body="description" type="string">
+  Project description
+</ParamField>
+
+<ParamField body="icon" type="string">
+  Project icon (emoji or icon identifier)
+</ParamField>
+
+<ParamField body="color" type="string">
+  Project color (hex code, e.g., #3B82F6)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the project was created successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<ResponseField name="project" type="object">
+  The newly created project object
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url http://localhost:3000/api/v1/projects \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "name": "AI Chatbot",
+    "description": "Customer service chatbot",
+    "icon": "🤖",
+    "color": "#3B82F6"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:3000/api/v1/projects', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: "AI Chatbot",
+    description: "Customer service chatbot",
+    icon: "🤖",
+    color: "#3B82F6"
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/projects"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "name": "AI Chatbot",
+    "description": "Customer service chatbot",
+    "icon": "🤖",
+    "color": "#3B82F6"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "message": "Project created",
+  "project": {
+    "id": "proj_123abc",
+    "name": "AI Chatbot",
+    "description": "Customer service chatbot",
+    "icon": "🤖",
+    "color": "#3B82F6",
+    "createdAt": "2024-01-17T10:30:00Z",
+    "updatedAt": "2024-01-17T10:30:00Z"
+  }
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+- Only the `name` field is required
+- Icons can be emojis or icon identifiers from your icon library
+- Colors should be in hex format (e.g., #3B82F6)
+- The project is automatically associated with the authenticated user

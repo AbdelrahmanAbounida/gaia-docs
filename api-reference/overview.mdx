@@ -3,30 +3,75 @@ title: "API Reference"
 description: "Complete API reference for GAIA AI"
 ---
 
-## Base URL
+## Introduction
 
-```
-http://localhost:3030/api/v1
-```
+GAIA AI provides a comprehensive REST API that enables you to:
 
-For production deployments, replace `localhost:3030` with your server address.
+- **Build AI Applications**: Create intelligent agents with multiple AI providers
+- **Manage Knowledge**: Upload and search through documents with RAG capabilities
+- **Execute Tools**: Run custom tools and integrate external services
+- **OpenAI Compatible**: Use OpenAI-compatible chat completions endpoint
+- **MCP Integration**: Connect Model Context Protocol servers for extended functionality
 
 ## Authentication
 
 All API requests require authentication using a Bearer token in the Authorization header:
-
 ```bash
 Authorization: Bearer YOUR_API_KEY
 ```
 
-Get your API key from the GAIA AI dashboard or by running in headless mode.
+### Getting Your API Key
 
-[Learn more about authentication →](/api-reference/authentication)
+1. Navigate to the **API Keys** page in your GAIA AI dashboard
+2. Click **"Create New Key"** button
+3. Copy your generated API key and store it securely
 
-## API Groups
+<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", margin: "20px 0" }}>
+  <img className="dark:hidden" src="/images/new-key-light1.png" alt="Create API Key - Light" style={{ width:"100%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+  <img className="dark:hidden" src="/images/new-key-light2.png" alt="API Key Created - Light" style={{ width:"100%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+  <img className="hidden dark:block" src="/images/new-key-dark1.png" alt="Create API Key - Dark" style={{ width:"100%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+  <img className="hidden dark:block" src="/images/new-key-dark2.png" alt="API Key Created - Dark" style={{ width:"100%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+</div>
+
+<Warning>
+  **Keep your API key secure!** Never commit it to version control or share it publicly.
+</Warning>
+
+## Base URL
+
+### Local Development
+```bash
+# Docker deployment
+http://localhost:5679/api/v1
+
+# Local development server
+http://localhost:3000/api/v1
+```
+
+### Production
+
+For production deployments, replace `localhost` with your server address:
+```bash
+https://your-domain.com/api/v1
+```
+
+## Using HTTPS with Ngrok
+
+To use GAIA AI with services that require HTTPS (like ChatGPT's "Talk to a website" feature), you need to expose your local instance via ngrok:
+
+### Quick Setup
+
+**Setup ngrok**:
+You can check it here [ngrok](https://dashboard.ngrok.com/get-started/setup)
+
+<Tip>
+  Your ngrok URL changes each time you restart it. For a permanent URL, 
+</Tip>
+
+## Available API Routes
 
 <CardGroup cols={2}>
-  <Card title="AI" icon="brain" href="/api-reference/ai/get-providers">
+  <Card title="AI" icon="server" href="/api-reference/ai/get-providers">
     Manage AI providers, models, and configurations
   </Card>
   
@@ -54,147 +99,7 @@ Get your API key from the GAIA AI dashboard or by running in headless mode.
     Manage API keys and provider credentials
   </Card>
   
-  <Card title="Prompts" icon="message" href="/api-reference/prompts/list">
-    Store and manage reusable prompts
-  </Card>
-</CardGroup>
-
-## OpenAI Compatibility
-
-GAIA AI implements OpenAI-compatible endpoints, allowing you to use existing OpenAI SDKs:
-
-<CodeGroup>
-
-```typescript TypeScript (OpenAI SDK)
-import OpenAI from 'openai';
-
-const client = new OpenAI({
-  baseURL: 'http://localhost:3030/api/v1/ai/chat',
-  apiKey: process.env.GAIA_API_KEY
-});
-```
-
-```typescript TypeScript (Vercel AI SDK)
-import { createOpenAI } from '@ai-sdk/openai';
-
-const gaia = createOpenAI({
-  baseURL: 'http://localhost:3030/api/v1/ai/chat',
-  apiKey: process.env.GAIA_API_KEY
-});
-```
-
-```python Python
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="http://localhost:3030/api/v1/ai/chat",
-    api_key="your-api-key"
-)
-```
-
-</CodeGroup>
-
-## Rate Limits
-
-Currently, GAIA AI does not enforce rate limits when self-hosted. For production deployments, consider implementing rate limiting at your reverse proxy or load balancer level.
-
-## Error Handling
-
-All endpoints return standard HTTP status codes:
-
-| Code | Description |
-|------|-------------|
-| 200  | Success |
-| 400  | Bad Request - Invalid parameters |
-| 401  | Unauthorized - Invalid or missing API key |
-| 404  | Not Found - Resource doesn't exist |
-| 500  | Internal Server Error |
-
-Error responses follow this format:
-
-```json
-{
-  "success": false,
-  "message": "Error description",
-  "error": "Detailed error information"
-}
-```
-
-## SDK Examples
-
-### TypeScript with OpenAI SDK
-
-```typescript
-import OpenAI from 'openai';
-
-const client = new OpenAI({
-  baseURL: 'http://localhost:3030/api/v1/ai/chat',
-  apiKey: process.env.GAIA_API_KEY
-});
-
-const completion = await client.chat.completions.create({
-  model: 'gpt-4o',
-  messages: [
-    { role: 'user', content: 'Search our documentation' }
-  ],
-  extra_body: {
-    chatId: 'chat-123'
-  }
-});
-```
-
-### TypeScript with Vercel AI SDK
-
-```typescript
-import { generateText } from 'ai';
-import { createOpenAI } from '@ai-sdk/openai';
-
-const gaia = createOpenAI({
-  baseURL: 'http://localhost:3030/api/v1/ai/chat',
-  apiKey: process.env.GAIA_API_KEY
-});
-
-const { text } = await generateText({
-  model: gaia('gpt-4o'),
-  prompt: 'What is GAIA AI?'
-});
-```
-
-### Python
-
-```python
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="http://localhost:3030/api/v1/ai/chat",
-    api_key="your-api-key"
-)
-
-response = client.chat.completions.create(
-    model="gpt-4o",
-    messages=[
-        {"role": "user", "content": "Search our documentation"}
-    ],
-    extra_body={"chatId": "chat-123"}
-)
-```
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Authentication" icon="lock" href="/api-reference/authentication">
-    Learn how to authenticate your requests
-  </Card>
-  
-  <Card title="Chat Completions" icon="message" href="/api-reference/chat/completions">
-    Start building with the chat API
-  </Card>
-  
-  <Card title="Knowledge Upload" icon="upload" href="/api-reference/knowledge/upload">
-    Add knowledge to your agent
-  </Card>
-  
-  <Card title="Tools" icon="wrench" href="/api-reference/tools/create">
-    Create custom tools
+  <Card title="Ollama" icon="https://images.seeklogo.com/logo-png/59/2/ollama-logo-png_seeklogo-593420.png" href="/api-reference/ollama/list">
+    Manage local Ollama models and configurations
   </Card>
 </CardGroup>

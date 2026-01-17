@@ -1,0 +1,133 @@
+---
+title: "List Installed Models"
+api: "GET /api/v1/ollama/list-models"
+description: "Retrieves all models currently installed on the Ollama instance"
+---
+
+## Query Parameters
+
+<ParamField query="baseUrl" type="string">
+  Optional Ollama server URL (defaults to http://localhost:11434)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the request was successful
+</ResponseField>
+
+<ResponseField name="models" type="array">
+  Array of installed model objects
+  
+  <Expandable title="model properties">
+    <ResponseField name="name" type="string">
+      Model name (e.g., "llama2:latest")
+    </ResponseField>
+    
+    <ResponseField name="size" type="number">
+      Model size in bytes
+    </ResponseField>
+    
+    <ResponseField name="digest" type="string">
+      Model digest hash for verification
+    </ResponseField>
+    
+    <ResponseField name="modified_at" type="string">
+      Last modified timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/list-models' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```bash cURL (Custom Ollama URL)
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/list-models?baseUrl=http://192.168.1.100:11434' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:3000/api/v1/ollama/list-models', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer <token>'
+  }
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/list-models"
+headers = {"Authorization": "Bearer <token>"}
+
+response = requests.get(url, headers=headers)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "models": [
+    {
+      "name": "llama2:latest",
+      "size": 3826793677,
+      "digest": "sha256:78e26419b4469263f75331927a00a0284ef6544c1975b826b15abdaef17bb962",
+      "modified_at": "2024-01-15T10:30:00Z"
+    },
+    {
+      "name": "mistral:latest",
+      "size": 4109865159,
+      "digest": "sha256:61e88e884507ba5e06c49b40e6226884b2a16e872382dca1224f4d8f5e5f2f53",
+      "modified_at": "2024-01-14T08:20:00Z"
+    }
+  ]
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 503 - Service Unavailable
+{
+  "success": false,
+  "error": "Ollama is not running",
+  "models": []
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "error": "Failed to list models",
+  "models": []
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+<Info>
+  Ensure Ollama is running before calling this endpoint. The default Ollama server runs on **http://localhost:11434**
+</Info>
+
+- Returns an empty array if no models are installed
+- Model sizes are in bytes (convert to GB by dividing by 1,073,741,824)
+- The digest can be used to verify model integrity

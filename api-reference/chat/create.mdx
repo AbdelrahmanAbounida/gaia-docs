@@ -1,0 +1,101 @@
+---
+title: "Create Chat"
+api: "POST /api/chats"
+description: "Creates a new chat for the authenticated user"
+---
+
+## Body Parameters
+
+<ParamField body="name" type="string" required>
+  Chat name
+</ParamField>
+
+<ParamField body="chatId" type="string">
+  Optional custom chat ID (if not provided, one will be generated)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the chat was created successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<ResponseField name="chat" type="object">
+  The newly created chat object
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.yourdomain.com/api/chats \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "name": "New Project Discussion",
+    "chatId": "custom_chat_id_123"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.yourdomain.com/api/chats', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: "New Project Discussion",
+    chatId: "custom_chat_id_123"
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "https://api.yourdomain.com/api/chats"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "name": "New Project Discussion",
+    "chatId": "custom_chat_id_123"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "message": "Chat created successfully",
+  "chat": {
+    "id": "custom_chat_id_123",
+    "name": "New Project Discussion",
+    "createdAt": "2024-01-17T10:30:00Z",
+    "updatedAt": "2024-01-17T10:30:00Z"
+  }
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>

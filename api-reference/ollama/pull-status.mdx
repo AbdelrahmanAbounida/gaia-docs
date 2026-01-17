@@ -1,0 +1,158 @@
+---
+title: "Get Pull Status"
+api: "GET /api/v1/ollama/pull-status"
+description: "Retrieves the current download progress for a model being pulled"
+---
+
+## Query Parameters
+
+<ParamField query="modelName" type="string" required>
+  Name of the model being pulled
+</ParamField>
+
+<ParamField query="baseUrl" type="string">
+  Optional Ollama server URL (defaults to http://localhost:11434)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the status was retrieved successfully
+</ResponseField>
+
+<ResponseField name="status" type="object">
+  Pull status information
+  
+  <Expandable title="status properties">
+    <ResponseField name="status" type="string">
+      Current pull status
+      - `pulling` - Downloading model
+      - `extracting` - Extracting model files
+      - `complete` - Pull completed
+      - `error` - Pull failed
+    </ResponseField>
+    
+    <ResponseField name="progress" type="number">
+      Download progress percentage (0-100)
+    </ResponseField>
+    
+    <ResponseField name="digest" type="string">
+      Model digest hash
+    </ResponseField>
+    
+    <ResponseField name="total" type="number">
+      Total bytes to download
+    </ResponseField>
+    
+    <ResponseField name="completed" type="number">
+      Bytes downloaded so far
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/pull-status?modelName=llama2' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:3000/api/v1/ollama/pull-status?modelName=llama2',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer <token>'
+    }
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/pull-status"
+headers = {"Authorization": "Bearer <token>"}
+params = {"modelName": "llama2"}
+
+response = requests.get(url, headers=headers, params=params)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Pulling
+{
+  "success": true,
+  "status": {
+    "status": "pulling",
+    "progress": 45.7,
+    "digest": "sha256:78e26419b446...",
+    "total": 3826793677,
+    "completed": 1748742390
+  }
+}
+```
+
+```json 200 - Complete
+{
+  "success": true,
+  "status": {
+    "status": "complete",
+    "progress": 100,
+    "digest": "sha256:78e26419b446...",
+    "total": 3826793677,
+    "completed": 3826793677
+  }
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "error": "Failed to get pull status"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+- Poll this endpoint periodically to monitor download progress
+- The `progress` field is a percentage between 0 and 100
+- Status changes from `pulling` → `extracting` → `complete`
+- Once status is `complete`, the model is ready to use
+
+## Polling Example
+
+```javascript
+async function monitorPull(modelName) {
+  const interval = setInterval(async () => {
+    const response = await fetch(
+      `http://localhost:3000/api/v1/ollama/pull-status?modelName=${modelName}`,
+      { headers: { 'Authorization': 'Bearer <token>' } }
+    );
+    const data = await response.json();
+    
+    console.log(`Progress: ${data.status.progress}%`);
+    
+    if (data.status.status === 'complete') {
+      clearInterval(interval);
+      console.log('Model pull completed!');
+    }
+  }, 2000); // Poll every 2 seconds
+}
+```

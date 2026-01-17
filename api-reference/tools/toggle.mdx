@@ -1,0 +1,107 @@
+---
+title: "Toggle  Activation"
+api: "POST /api/tools/{id}/activate"
+description: "Activates or deactivates a tool by toggling its enabled state"
+---
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  Tool ID
+</ParamField>
+
+## Request Body
+
+<ParamField body="toolId" type="string" required>
+  Tool ID (must match path parameter)
+</ParamField>
+
+<ParamField body="activeState" type="boolean" required>
+  Active state to set
+  
+  - `true` - Activate the tool
+  - `false` - Deactivate the tool
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the operation was successful
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Response message
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.yourapp.com/api/tools/tool_123/activate \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "toolId": "tool_123",
+    "activeState": true
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.yourapp.com/api/tools/tool_123/activate', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    toolId: 'tool_123',
+    activeState: true
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "https://api.yourapp.com/api/tools/tool_123/activate"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "toolId": "tool_123",
+    "activeState": True
+}
+
+response = requests.post(url, json=payload, headers=headers)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response (Activated)
+{
+  "success": true,
+  "message": "Tool activation updated successfully"
+}
+```
+
+```json Success Response (Deactivated)
+{
+  "success": true,
+  "message": "Tool activation updated successfully"
+}
+```
+
+```json Error Response
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>

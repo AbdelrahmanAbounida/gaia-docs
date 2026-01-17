@@ -1,0 +1,113 @@
+---
+title: "Delete Model"
+api: "DELETE /api/v1/ollama/delete-model"
+description: "Removes a model from the local Ollama instance"
+---
+
+## Body Parameters
+
+<ParamField body="modelName" type="string" required>
+  Name of the model to delete (e.g., "llama2", "mistral:7b")
+</ParamField>
+
+<ParamField body="baseUrl" type="string">
+  Optional Ollama server URL (defaults to http://localhost:11434)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the model was deleted successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request DELETE \
+  --url http://localhost:3000/api/v1/ollama/delete-model \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "modelName": "llama2"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:3000/api/v1/ollama/delete-model', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    modelName: "llama2"
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/delete-model"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "modelName": "llama2"
+}
+
+response = requests.delete(url, headers=headers, json=payload)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "message": "Successfully deleted model: llama2"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 404 - Not Found
+{
+  "success": false,
+  "error": "Model not found"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "error": "Failed to delete model"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+<Warning>
+  This action is **irreversible**. Once deleted, you'll need to pull the model again to use it.
+</Warning>
+
+- Deleting a model frees up disk space
+- The model name must match exactly (including tag)
+- You can delete specific variants by including the tag (e.g., "llama2:7b")
+- To delete all variants, you must delete each one individually

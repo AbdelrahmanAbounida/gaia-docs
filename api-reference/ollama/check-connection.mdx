@@ -1,0 +1,148 @@
+---
+title: "Check Connection"
+api: "GET /api/v1/ollama/check-connection"
+description: "Verifies connectivity to the Ollama server and checks if it's running"
+---
+
+## Query Parameters
+
+<ParamField query="baseUrl" type="string">
+  Optional Ollama server URL to check (defaults to http://localhost:11434)
+</ParamField>
+
+<ParamField query="apiKey" type="string">
+  Optional API key for authentication (if Ollama server requires it)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the connection check was successful
+</ResponseField>
+
+<ResponseField name="connected" type="boolean">
+  Whether connection to Ollama was successful
+</ResponseField>
+
+<ResponseField name="version" type="string">
+  Ollama version if connected
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/check-connection' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```bash cURL (Custom Ollama URL)
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/check-connection?baseUrl=http://192.168.1.100:11434' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:3000/api/v1/ollama/check-connection',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer <token>'
+    }
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/check-connection"
+headers = {"Authorization": "Bearer <token>"}
+
+response = requests.get(url, headers=headers)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Connected
+{
+  "success": true,
+  "connected": true,
+  "version": "0.1.22"
+}
+```
+
+```json 200 - Not Connected
+{
+  "success": true,
+  "connected": false
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "connected": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 500 - Connection Failed
+{
+  "success": false,
+  "connected": false,
+  "error": "Connection failed: ECONNREFUSED"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+<Info>
+  Use this endpoint to verify Ollama is running before attempting other operations.
+</Info>
+
+- Returns `connected: true` only if Ollama is running and reachable
+- The `version` field shows the Ollama server version
+- Useful for health checks and setup validation
+- Default Ollama URL is `http://localhost:11434`
+
+## Usage Example
+
+```javascript
+// Check connection before pulling a model
+async function safePullModel(modelName) {
+  const checkResponse = await fetch(
+    'http://localhost:3000/api/v1/ollama/check-connection',
+    { headers: { 'Authorization': 'Bearer <token>' } }
+  );
+  const checkData = await checkResponse.json();
+  
+  if (!checkData.connected) {
+    console.error('Ollama is not running. Please start Ollama first.');
+    return;
+  }
+  
+  // Proceed with model pull
+  const pullResponse = await fetch(
+    'http://localhost:3000/api/v1/ollama/pull-model',
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer <token>',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ modelName })
+    }
+  );
+  
+  return await pullResponse.json();
+}
+```

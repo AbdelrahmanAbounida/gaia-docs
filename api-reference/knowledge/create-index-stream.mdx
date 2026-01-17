@@ -1,0 +1,147 @@
+---
+title: "Create and Index Document (Streaming)"
+api: "POST /api/knowledge/documents/stream"
+description: "Creates and indexes a document with real-time progress updates via Server-Sent Events"
+---
+
+## Request Body
+
+<ParamField body="projectId" type="string" required>
+  Project ID to associate the document with
+</ParamField>
+
+<ParamField body="fileName" type="string" required>
+  Name of the file/document
+</ParamField>
+
+<ParamField body="fileType" type="string" required>
+  Type of file (e.g., `pdf`, `txt`, `md`, `docx`)
+</ParamField>
+
+<ParamField body="sourceType" type="string" required>
+  Source type of the document (e.g., `upload`, `url`, `integration`)
+</ParamField>
+
+<ParamField body="content" type="string" required>
+  Content of the document to be indexed
+</ParamField>
+
+<ParamField body="fileId" type="string">
+  Optional file ID if document is linked to a file
+</ParamField>
+
+## Response
+
+This endpoint returns a Server-Sent Events (SSE) stream with real-time progress updates.
+
+<ResponseField name="type" type="string">
+  Event type (e.g., `progress`, `complete`, `error`)
+</ResponseField>
+
+<ResponseField name="progress" type="number">
+  Progress percentage (0-100)
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Current status message
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.example.com/api/knowledge/documents/stream \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Accept: text/event-stream" \
+  -N \
+  -d '{
+    "projectId": "proj_123",
+    "fileName": "large-document.pdf",
+    "fileType": "pdf",
+    "sourceType": "upload",
+    "content": "Large document content..."
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.example.com/api/knowledge/documents/stream', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json',
+    'Accept': 'text/event-stream'
+  },
+  body: JSON.stringify({
+    projectId: 'proj_123',
+    fileName: 'large-document.pdf',
+    fileType: 'pdf',
+    sourceType: 'upload',
+    content: 'Large document content...'
+  })
+});
+
+const reader = response.body.getReader();
+const decoder = new TextDecoder();
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  
+  const chunk = decoder.decode(value);
+  const lines = chunk.split('\n');
+  
+  for (const line of lines) {
+    if (line.startsWith('data: ')) {
+      const event = JSON.parse(line.slice(6));
+      console.log('Progress:', event.progress, event.message);
+    }
+  }
+}
+```
+
+```python Python
+import requests
+import json
+
+response = requests.post(
+    'https://api.example.com/api/knowledge/documents/stream',
+    headers={
+        'Authorization': 'Bearer YOUR_API_KEY',
+        'Content-Type': 'application/json',
+        'Accept': 'text/event-stream'
+    },
+    json={
+        'projectId': 'proj_123',
+        'fileName': 'large-document.pdf',
+        'fileType': 'pdf',
+        'sourceType': 'upload',
+        'content': 'Large document content...'
+    },
+    stream=True
+)
+
+for line in response.iter_lines():
+    if line:
+        decoded = line.decode('utf-8')
+        if decoded.startswith('data: '):
+            event = json.loads(decoded[6:])
+            print(f"Progress: {event['progress']}% - {event['message']}")
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```text Stream Events
+data: {"type":"progress","progress":10,"message":"Parsing document"}
+
+data: {"type":"progress","progress":30,"message":"Extracting text"}
+
+data: {"type":"progress","progress":60,"message":"Creating embeddings"}
+
+data: {"type":"progress","progress":90,"message":"Storing vectors"}
+
+data: {"type":"complete","progress":100,"message":"Document indexed successfully","documentId":"doc_abc123xyz"}
+```
+
+</ResponseExample>

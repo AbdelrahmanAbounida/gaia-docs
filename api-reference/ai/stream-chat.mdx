@@ -1,0 +1,146 @@
+---
+title: "Stream Chat"
+api: "POST /api/ai/stream-chat"
+description: "AI SDK compatible chat streaming endpoint"
+---
+
+## Request Body
+
+<ParamField body="chatId" type="string" required>
+  Chat session identifier
+</ParamField>
+
+<ParamField body="messages" type="array" required>
+  Array of message objects
+  
+  <Expandable title="message properties">
+    <ResponseField name="role" type="string" required>
+      Message role: `system`, `user`, or `assistant`
+    </ResponseField>
+    
+    <ResponseField name="content" type="string" required>
+      Message content
+    </ResponseField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="model" type="string" default="gpt-4o">
+  Model identifier
+</ParamField>
+
+<ParamField body="provider" type="string">
+  Provider name (e.g., OpenAI, Anthropic, Google)
+</ParamField>
+
+<ParamField body="system" type="string">
+  System prompt for the conversation
+</ParamField>
+
+## Response
+
+The endpoint returns a streaming response compatible with the AI SDK. The response is streamed as Server-Sent Events (SSE).
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.yourapp.com/api/ai/stream-chat \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "chatId": "chat_123",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Tell me about AI"
+      }
+    ],
+    "model": "gpt-4o",
+    "system": "You are a helpful AI assistant."
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.yourapp.com/api/ai/stream-chat', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    chatId: 'chat_123',
+    messages: [
+      {
+        role: 'user',
+        content: 'Tell me about AI'
+      }
+    ],
+    model: 'gpt-4o',
+    system: 'You are a helpful AI assistant.'
+  })
+});
+
+// Handle streaming response
+const reader = response.body.getReader();
+const decoder = new TextDecoder();
+
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  
+  const chunk = decoder.decode(value);
+  console.log(chunk);
+}
+```
+
+```python Python
+import requests
+
+url = "https://api.yourapp.com/api/ai/stream-chat"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "chatId": "chat_123",
+    "messages": [
+        {
+            "role": "user",
+            "content": "Tell me about AI"
+        }
+    ],
+    "model": "gpt-4o",
+    "system": "You are a helpful AI assistant."
+}
+
+response = requests.post(url, json=payload, headers=headers, stream=True)
+
+# Handle streaming response
+for chunk in response.iter_content(chunk_size=None):
+    if chunk:
+        print(chunk.decode('utf-8'))
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```text Streaming Response
+0:"AI"
+0:" is"
+0:" a"
+0:" field"
+0:" of"
+0:" computer"
+0:" science"
+...
+```
+
+```json Error Response
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>

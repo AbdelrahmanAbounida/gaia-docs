@@ -1,0 +1,87 @@
+---
+title: "Delete Chat"
+api: "DELETE /api/chats/{id}"
+description: "Deletes a specific chat and all associated data for the authenticated user"
+---
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  Chat ID to delete
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the chat was deleted successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request DELETE \
+  --url https://api.yourdomain.com/api/chats/chat_123abc \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.yourdomain.com/api/chats/chat_123abc', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer <token>'
+  }
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "https://api.yourdomain.com/api/chats/chat_123abc"
+headers = {"Authorization": "Bearer <token>"}
+
+response = requests.delete(url, headers=headers)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "message": "Chat deleted successfully"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+```json 404 - Not Found
+{
+  "success": false,
+  "message": "Chat not found"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+<Warning>
+  This action is **irreversible**. Deleting a chat will also delete:
+  - All messages in the chat
+  - All votes associated with messages
+  - All streams created for the chat
+  - Any other associated data
+</Warning>

@@ -1,0 +1,87 @@
+---
+title: "Delete Project"
+api: "DELETE /api/v1/projects/{projectId}"
+description: "Deletes a specific project for the authenticated user"
+---
+
+## Path Parameters
+
+<ParamField path="projectId" type="string" required>
+  Project ID to delete
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the project was deleted successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request DELETE \
+  --url http://localhost:3000/api/v1/projects/proj_123abc \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:3000/api/v1/projects/proj_123abc', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer <token>'
+  }
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/projects/proj_123abc"
+headers = {"Authorization": "Bearer <token>"}
+
+response = requests.delete(url, headers=headers)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "message": "Project deleted"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+```json 404 - Not Found
+{
+  "success": false,
+  "message": "Project not found"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+<Warning>
+  This action is **irreversible**. Once a project is deleted, it cannot be recovered.
+</Warning>
+
+- Deleting a project will remove all associated data
+- All workflows, agents, and other resources linked to this project will be affected
+- Ensure you have proper backups before deleting a project

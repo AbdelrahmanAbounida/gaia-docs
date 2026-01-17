@@ -1,0 +1,100 @@
+---
+title: "Detect Authentication"
+api: "POST /api/mcp/detect-auth"
+description: "Analyzes an MCP server URL to determine required authentication method"
+---
+
+## Request Body
+
+<ParamField body="url" type="string" required>
+  MCP server URL to analyze (must be a valid URI)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Whether the detection was successful
+</ResponseField>
+
+<ResponseField name="isAuthenticated" type="boolean">
+  Whether the server is currently authenticated
+</ResponseField>
+
+<ResponseField name="authType" type="string">
+  Detected authentication type: `oauth`, `bearer`, `custom`, or `none`
+</ResponseField>
+
+<ResponseField name="requiresAuth" type="boolean">
+  Whether the server requires authentication
+</ResponseField>
+
+<ResponseField name="error" type="string">
+  Error message if detection failed
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl -X POST https://api.example.com/api/mcp/detect-auth \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://mcp-server.example.com"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.example.com/api/mcp/detect-auth', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    url: 'https://mcp-server.example.com'
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'https://api.example.com/api/mcp/detect-auth',
+    headers={
+        'Authorization': 'Bearer YOUR_API_KEY',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'url': 'https://mcp-server.example.com'
+    }
+)
+
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json OAuth Required
+{
+  "success": true,
+  "isAuthenticated": false,
+  "authType": "oauth",
+  "requiresAuth": true
+}
+```
+
+```json No Auth Required
+{
+  "success": true,
+  "isAuthenticated": true,
+  "authType": "none",
+  "requiresAuth": false
+}
+```
+
+</ResponseExample>

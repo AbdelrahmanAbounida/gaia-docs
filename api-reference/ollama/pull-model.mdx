@@ -1,0 +1,129 @@
+---
+title: "Pull Model"
+api: "POST /api/v1/ollama/pull-model"
+description: "Initiates download of an Ollama model to the local Ollama instance"
+---
+
+## Body Parameters
+
+<ParamField body="modelName" type="string" required>
+  Name of the model to pull (e.g., "llama2", "mistral:7b")
+</ParamField>
+
+<ParamField body="baseUrl" type="string">
+  Optional Ollama server URL (defaults to http://localhost:11434)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the pull was initiated successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Status message about the pull operation
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url http://localhost:3000/api/v1/ollama/pull-model \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "modelName": "llama2"
+  }'
+```
+
+```bash cURL (Custom Ollama URL)
+curl --request POST \
+  --url http://localhost:3000/api/v1/ollama/pull-model \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "modelName": "llama2:7b",
+    "baseUrl": "http://192.168.1.100:11434"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:3000/api/v1/ollama/pull-model', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    modelName: "llama2"
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/pull-model"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "modelName": "llama2"
+}
+
+response = requests.post(url, headers=headers, json=payload)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "message": "Started pulling model: llama2"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 503 - Service Unavailable
+{
+  "success": false,
+  "error": "Ollama is not running. Please start Ollama and try again."
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "error": "Failed to pull model"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+<Warning>
+  Ensure Ollama is running before attempting to pull a model. Start it with `ollama serve` or by running the Ollama app.
+</Warning>
+
+- Model pulls run asynchronously in the background
+- Use the [Get Pull Status](/api-reference/ollama/pull-status) endpoint to monitor download progress
+- Large models can take significant time to download
+- Specify a tag (e.g., "llama2:7b") to pull a specific variant, or use just the name to pull the latest version
+
+## Model Name Format
+
+- `modelName`: Just the name (pulls latest) - e.g., "llama2"
+- `modelName:tag`: Specific version - e.g., "llama2:7b", "mistral:latest"

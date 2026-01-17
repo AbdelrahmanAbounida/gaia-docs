@@ -1,0 +1,158 @@
+---
+title: "Get Model Details"
+api: "GET /api/v1/ollama/model-details"
+description: "Retrieves comprehensive details about a specific Ollama model from the registry"
+---
+
+## Query Parameters
+
+<ParamField query="name" type="string" required>
+  Model name to get details for (e.g., "llama2", "mistral")
+</ParamField>
+
+<ParamField query="verbose" type="boolean" default={false}>
+  Include verbose information in the response
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the request was successful
+</ResponseField>
+
+<ResponseField name="model" type="object">
+  Detailed model information
+  
+  <Expandable title="model properties">
+    <ResponseField name="name" type="string">
+      Model name
+    </ResponseField>
+    
+    <ResponseField name="summary" type="string">
+      Brief summary of the model
+    </ResponseField>
+    
+    <ResponseField name="downloads" type="string">
+      Number of downloads (formatted)
+    </ResponseField>
+    
+    <ResponseField name="tags" type="array">
+      Available model tags/versions
+    </ResponseField>
+    
+    <ResponseField name="lastUpdated" type="string">
+      Last update timestamp
+    </ResponseField>
+    
+    <ResponseField name="sizes" type="array">
+      Available model sizes
+    </ResponseField>
+    
+    <ResponseField name="variants" type="array">
+      Model variants with different configurations
+    </ResponseField>
+    
+    <ResponseField name="readme" type="string">
+      Model README/documentation
+    </ResponseField>
+    
+    <ResponseField name="command" type="string">
+      Command to pull the model
+    </ResponseField>
+    
+    <ResponseField name="url" type="string">
+      Model registry URL
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/model-details?name=llama2&verbose=true' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:3000/api/v1/ollama/model-details?name=llama2&verbose=true',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer <token>'
+    }
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/model-details"
+headers = {"Authorization": "Bearer <token>"}
+params = {
+    "name": "llama2",
+    "verbose": True
+}
+
+response = requests.get(url, headers=headers, params=params)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "model": {
+    "name": "llama2",
+    "summary": "Meta's Llama 2 model for general chat and text generation",
+    "downloads": "5.4M",
+    "tags": ["latest", "7b", "13b", "70b"],
+    "lastUpdated": "2024-01-10T15:30:00Z",
+    "sizes": ["3.8GB", "7.4GB", "40GB"],
+    "variants": [
+      {
+        "name": "llama2:7b",
+        "size": "3.8GB",
+        "parameters": "7B"
+      },
+      {
+        "name": "llama2:13b",
+        "size": "7.4GB",
+        "parameters": "13B"
+      }
+    ],
+    "readme": "# Llama 2\n\nMeta's Llama 2...",
+    "command": "ollama run llama2",
+    "url": "https://ollama.com/library/llama2"
+  }
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "error": "Failed to fetch model details"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+- Use this endpoint to get comprehensive information before pulling a model
+- The `readme` field contains full model documentation in Markdown format
+- `variants` shows all available sizes and configurations

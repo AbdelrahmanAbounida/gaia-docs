@@ -1,0 +1,135 @@
+---
+title: "Create Vote"
+api: "POST /api/chats/{chatId}/votes"
+description: "Creates a new vote or updates an existing vote on a message"
+---
+
+## Path Parameters
+
+<ParamField path="chatId" type="string" required>
+  Chat ID containing the message
+</ParamField>
+
+## Body Parameters
+
+<ParamField body="chatId" type="string" required>
+  Chat ID (must match path parameter)
+</ParamField>
+
+<ParamField body="messageId" type="string" required>
+  Message ID to vote on
+</ParamField>
+
+<ParamField body="isUpvoted" type="boolean" required>
+  Whether this is an upvote (true) or downvote (false)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the vote was created or updated successfully
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Success or error message
+</ResponseField>
+
+<ResponseField name="vote" type="object">
+  The created or updated vote object
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.yourdomain.com/api/chats/chat_123abc/votes \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "chatId": "chat_123abc",
+    "messageId": "msg_456def",
+    "isUpvoted": true
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.yourdomain.com/api/chats/chat_123abc/votes', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    chatId: "chat_123abc",
+    messageId: "msg_456def",
+    isUpvoted: true
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "https://api.yourdomain.com/api/chats/chat_123abc/votes"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "chatId": "chat_123abc",
+    "messageId": "msg_456def",
+    "isUpvoted": True
+}
+
+response = requests.post(url, headers=headers, json=payload)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Created
+{
+  "success": true,
+  "message": "Vote created successfully",
+  "vote": {
+    "id": "vote_789xyz",
+    "chatId": "chat_123abc",
+    "messageId": "msg_456def",
+    "isUpvoted": true,
+    "createdAt": "2024-01-17T10:30:00Z"
+  }
+}
+```
+
+```json 200 - Updated
+{
+  "success": true,
+  "message": "Vote updated successfully",
+  "vote": {
+    "id": "vote_789xyz",
+    "chatId": "chat_123abc",
+    "messageId": "msg_456def",
+    "isUpvoted": false,
+    "updatedAt": "2024-01-17T11:30:00Z"
+  }
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+- If a vote already exists for the message, it will be updated with the new value
+- Each user can have only one vote per message
+- Changing from upvote to downvote (or vice versa) updates the existing vote

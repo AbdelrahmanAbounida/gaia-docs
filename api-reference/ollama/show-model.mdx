@@ -1,0 +1,150 @@
+---
+title: "Show Model Information"
+api: "GET /api/v1/ollama/show-model"
+description: "Retrieves detailed information about an installed Ollama model including capabilities and parameters"
+---
+
+## Query Parameters
+
+<ParamField query="modelName" type="string" required>
+  Name of the model to inspect (e.g., "llama2", "mistral:7b")
+</ParamField>
+
+<ParamField query="verbose" type="boolean" default={false}>
+  Include verbose model information
+</ParamField>
+
+<ParamField query="baseUrl" type="string">
+  Optional Ollama server URL (defaults to http://localhost:11434)
+</ParamField>
+
+## Response
+
+<ResponseField name="success" type="boolean">
+  Indicates if the request was successful
+</ResponseField>
+
+<ResponseField name="capabilities" type="array">
+  Model capabilities and features (e.g., ["chat", "completion", "embedding"])
+</ResponseField>
+
+<ResponseField name="details" type="object">
+  Detailed model information
+  
+  <Expandable title="details properties">
+    <ResponseField name="parent_model" type="string">
+      Parent model name
+    </ResponseField>
+    
+    <ResponseField name="format" type="string">
+      Model format (e.g., "gguf")
+    </ResponseField>
+    
+    <ResponseField name="family" type="string">
+      Model family (e.g., "llama")
+    </ResponseField>
+    
+    <ResponseField name="families" type="array">
+      Model family hierarchy
+    </ResponseField>
+    
+    <ResponseField name="parameter_size" type="string">
+      Number of parameters (e.g., "7B", "13B")
+    </ResponseField>
+    
+    <ResponseField name="quantization_level" type="string">
+      Quantization level (e.g., "Q4_0", "Q5_K_M")
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request GET \
+  --url 'http://localhost:3000/api/v1/ollama/show-model?modelName=llama2&verbose=true' \
+  --header 'Authorization: Bearer <token>'
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:3000/api/v1/ollama/show-model?modelName=llama2&verbose=true',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer <token>'
+    }
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "http://localhost:3000/api/v1/ollama/show-model"
+headers = {"Authorization": "Bearer <token>"}
+params = {
+    "modelName": "llama2",
+    "verbose": True
+}
+
+response = requests.get(url, headers=headers, params=params)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200 - Success
+{
+  "success": true,
+  "capabilities": ["chat", "completion", "generate"],
+  "details": {
+    "parent_model": "",
+    "format": "gguf",
+    "family": "llama",
+    "families": ["llama"],
+    "parameter_size": "7B",
+    "quantization_level": "Q4_0"
+  }
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "error": "Unauthorized"
+}
+```
+
+```json 404 - Not Found
+{
+  "success": false,
+  "error": "Model not found"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "error": "Failed to get model information"
+}
+```
+
+</ResponseExample>
+
+## Notes
+
+- This endpoint only works for **installed models** (use [List Models](/api-reference/ollama/list-models) to see what's installed)
+- The `capabilities` array indicates what the model can do (chat, embeddings, etc.)
+- `quantization_level` affects model size and performance
+- Use `verbose=true` for additional technical details
+
+## Common Quantization Levels
+
+- **Q4_0**: 4-bit quantization, smallest size, lower quality
+- **Q5_K_M**: 5-bit medium quality
+- **Q8_0**: 8-bit quantization, larger size, higher quality

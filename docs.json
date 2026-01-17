@@ -70,22 +70,16 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["api-reference/overview", "api-reference/authentication"]
+            "pages": ["api-reference/overview"]
           },
           {
-            "group": "AI",
+            "group": "Credentials",
             "pages": [
-              "api-reference/ai/get-providers",
-              "api-reference/ai/get-models",
-              "api-reference/ai/get-user-models"
-            ]
-          },
-          {
-            "group": "Chat",
-            "pages": [
-              "api-reference/chat/completions",
-              "api-reference/chat/stream",
-              "api-reference/chat/image-generation"
+              "api-reference/credentials/list",
+              "api-reference/credentials/create",
+              "api-reference/credentials/update",
+              "api-reference/credentials/delete",
+              "api-reference/credentials/delete-model"
             ]
           },
           {
@@ -98,37 +92,134 @@
             ]
           },
           {
-            "group": "Knowledge",
+            "group": "Ollama",
             "pages": [
-              "api-reference/knowledge/upload",
-              "api-reference/knowledge/search",
-              "api-reference/knowledge/delete"
+              "api-reference/ollama/search",
+              "api-reference/ollama/model-details",
+              "api-reference/ollama/list-models",
+              "api-reference/ollama/show-model",
+              "api-reference/ollama/pull-status",
+              "api-reference/ollama/check-connection",
+              "api-reference/ollama/pull-model",
+              "api-reference/ollama/delete-model"
             ]
           },
           {
-            "group": "MCP",
+            "group": "AI",
             "pages": [
-              "api-reference/mcp/list-servers",
-              "api-reference/mcp/add-server",
-              "api-reference/mcp/remove-server"
+              "api-reference/ai/get-all-providers",
+              "api-reference/ai/get-all-models",
+              "api-reference/ai/get-user-models",
+              "api-reference/ai/chat-completions",
+              "api-reference/ai/stream-chat",
+              "api-reference/ai/image-generation"
             ]
           },
           {
             "group": "Tools",
             "pages": [
+              "api-reference/tools/get",
               "api-reference/tools/list",
               "api-reference/tools/create",
-              "api-reference/tools/execute",
+              "api-reference/tools/toggle",
+              "api-reference/tools/update",
               "api-reference/tools/delete"
             ]
           },
           {
-            "group": "Credentials",
+            "group": "Chat",
             "pages": [
-              "api-reference/credentials/list",
-              "api-reference/credentials/create",
-              "api-reference/credentials/update",
-              "api-reference/credentials/delete"
+              {
+                "group": "Chat Management",
+                "pages": [
+                  "api-reference/chat/list",
+                  "api-reference/chat/get",
+                  "api-reference/chat/create",
+                  "api-reference/chat/update",
+                  "api-reference/chat/delete"
+                ]
+              },
+              {
+                "group": "Messages",
+                "pages": [
+                  "api-reference/chat/list-messages",
+                  "api-reference/chat/create-message",
+                  "api-reference/chat/delete-message"
+                ]
+              },
+              {
+                "group": "Votes",
+                "pages": [
+                  "api-reference/chat/list-votes",
+                  "api-reference/chat/create-vote"
+                ]
+              },
+              {
+                "group": "Streaming",
+                "pages": ["api-reference/chat/create-stream"]
+              }
+            ]
+          },
+
+          {
+            "group": "Knowledge",
+            "pages": [
+              {
+                "group": "Documents",
+                "pages": [
+                  "api-reference/knowledge/create-index",
+                  "api-reference/knowledge/create-index-stream",
+                  "api-reference/knowledge/list-rag-documents",
+                  "api-reference/knowledge/get-rag-document",
+                  "api-reference/knowledge/delete-rag-document"
+                ]
+              },
+              {
+                "group": "Search",
+                "pages": ["api-reference/knowledge/search-documents"]
+              },
+              {
+                "group": "Configuration",
+                "pages": [
+                  "api-reference/knowledge/validate-vectorstore",
+                  "api-reference/knowledge/get-rag-settings",
+                  "api-reference/knowledge/update-rag-settings"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              {
+                "group": "Server Management",
+                "pages": [
+                  "api-reference/mcp/validate",
+                  "api-reference/mcp/create",
+                  "api-reference/mcp/list",
+                  "api-reference/mcp/get",
+                  "api-reference/mcp/update",
+                  "api-reference/mcp/delete"
+                ]
+              },
+              {
+                "group": "Connection",
+                "pages": [
+                  "api-reference/mcp/detect-auth",
+                  "api-reference/mcp/detect-transport",
+                  "api-reference/mcp/connect",
+                  "api-reference/mcp/disconnect"
+                ]
+              },
+              {
+                "group": "Server Capabilities",
+                "pages": [
+                  "api-reference/mcp/lists",
+                  "api-reference/mcp/list-resources",
+                  "api-reference/mcp/list-prompts",
+                  "api-reference/mcp/read-resource"
+                ]
+              }
             ]
           }
         ]

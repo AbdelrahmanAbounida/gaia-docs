@@ -1,0 +1,144 @@
+---
+title: "Image Generation"
+api: "POST /api/ai/image/generation"
+description: "AI SDK compatible image generation endpoint with streaming support"
+---
+
+## Request Body
+
+<ParamField body="prompt" type="string" required>
+  Text prompt describing the image to generate
+</ParamField>
+
+<ParamField body="model" type="string" default="google/gemini-2.5-flash-image">
+  Image model identifier
+</ParamField>
+
+<ParamField body="provider" type="string">
+  Provider name (e.g., OpenAI, Google)
+</ParamField>
+
+<ParamField body="n" type="number" default="1">
+  Number of images to generate
+</ParamField>
+
+<ParamField body="stream" type="boolean" default="false">
+  Enable streaming response
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of generated images
+  
+  <Expandable title="image properties">
+    <ResponseField name="url" type="string">
+      URL of the generated image
+    </ResponseField>
+    
+    <ResponseField name="b64_json" type="string">
+      Base64-encoded image data
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="created" type="number">
+  Unix timestamp of creation
+</ResponseField>
+
+<RequestExample>
+
+```bash cURL
+curl --request POST \
+  --url https://api.yourapp.com/api/ai/image/generation \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "prompt": "A futuristic city at sunset with flying cars",
+    "model": "dall-e-3",
+    "n": 1,
+    "stream": false
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.yourapp.com/api/ai/image/generation', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer <token>',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    prompt: 'A futuristic city at sunset with flying cars',
+    model: 'dall-e-3',
+    n: 1,
+    stream: false
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "https://api.yourapp.com/api/ai/image/generation"
+headers = {
+    "Authorization": "Bearer <token>",
+    "Content-Type": "application/json"
+}
+payload = {
+    "prompt": "A futuristic city at sunset with flying cars",
+    "model": "dall-e-3",
+    "n": 1,
+    "stream": False
+}
+
+response = requests.post(url, json=payload, headers=headers)
+data = response.json()
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Success Response
+{
+  "created": 1677652288,
+  "data": [
+    {
+      "url": "https://cdn.example.com/images/generated/abc123.png",
+      "b64_json": null
+    }
+  ]
+}
+```
+
+```json Success Response (Base64)
+{
+  "created": 1677652288,
+  "data": [
+    {
+      "url": null,
+      "b64_json": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+    }
+  ]
+}
+```
+
+```json Streaming Response
+data: {"type":"chunk","image":"data:image/png;base64,iVBORw0KG..."}
+
+data: {"type":"chunk","image":"data:image/png;base64,goAAAAN..."}
+
+data: {"type":"done","image":"data:image/png;base64,SUhEUgAA..."}
+```
+
+```json Error Response
+{
+  "success": false,
+  "message": "Unauthorized"
+}
+```
+
+</ResponseExample>
