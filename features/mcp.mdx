@@ -1,49 +1,107 @@
 ---
 title: MCP Connection
-description: "Connecting to different MCP servers"
+description: "Extend your agents with Model Context Protocol servers"
 ---
-# MCP Integration
 
-Connect to [Model Context Protocol](https://modelcontextprotocol.io) servers to extend your agents.
+Connect your agents to external systems and services through the Model Context Protocol. MCP enables seamless integration with databases, APIs, file systems, and third-party platforms, giving your agents access to real-world data and capabilities.
+
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full aspect-video rounded-2xl border h-[370px] border-[#e7e5e4] dark:hidden"
+  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3ifExQLBej0JxH8hCGVL79pSnazX4b6WyPoqur"
+/>
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full aspect-video rounded-xl h-[370px] hidden dark:block"
+  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3iexHO73j1JMs3QDgVqivHtNyXh6muzU7w2EPb"
+/>
+
+---
 
 ## What is MCP?
 
-MCP lets AI agents interact with external systems through a standardized protocol. Think of it as giving your agent access to tools and data from other services.
+The [Model Context Protocol](https://modelcontextprotocol.io) is a standardized way for AI agents to interact with external systems. MCP servers act as bridges between your agent and various services, enabling your AI to:
 
-## Available MCP Servers
+- **Access external data sources** - Connect to databases, file systems, cloud storage, and APIs
+- **Integrate with platforms** - Work with GitHub, Slack, Google Drive, Notion, and more
+- **Execute system operations** - Run commands, query databases, manipulate files
+- **Maintain context** - Keep consistent access to resources across conversations
 
-Popular MCP servers:
-- **GitHub** - Repository access
-- **Slack** - Message and channel operations
-- **Google Drive** - File management
-- **PostgreSQL** - Database queries
-- [Browse more on MCP Hub](https://github.com/modelcontextprotocol/servers)
+Think of MCP as a universal adapter that lets your agent plug into virtually any service or data source through a standardized interface.
 
-## Connecting MCP Servers
+---
+## Setup MCP Tab View
+
+<Steps>
+  <Step title="Navigate to MCP Tab View">
+    Go to **Tools & MCP Page** to view and manage your connected servers.
+
+    <img className="dark:hidden mx-auto" src="/images/mcp-view-light.png" alt="MCP servers interface" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/mcp-view-dark.png" alt="MCP servers interface" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+  </Step>
+
+  <Step title="Add a New Server">
+    Click **Add Server** and configure your MCP connection:
+
+    <img className="dark:hidden mx-auto" src="/images/mcp-form-light.png" alt="Add MCP server form" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/mcp-form-dark.png" alt="Add MCP server form" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+
+
+  </Step>
+
+  <Step title="Enable for Projects">
+    Once added, enable the MCP server for specific projects where you want your agent to have access to its capabilities.
+  </Step>
+
+  <Step title="Test Your Connection">
+    Start a conversation with your agent and ask it to use the connected service:
+
+    <img className="dark:hidden mx-auto" src="/images/chat-light.png" alt="Testing MCP in chat" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/chat-dark.png" alt="Testing MCP in chat" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+
+    Your agent will automatically use MCP tools when relevant to the conversation.
+  </Step>
+
+</Steps>
+
+---
+
+## Using MCP Servers
 
 ### Via UI
-1. Go to Settings → MCP Servers
-2. Click "Add Server"
-3. Enter server details:
-   - Name
-   - Command to run (e.g., `npx @modelcontextprotocol/server-github`)
-   - Environment variables (API keys, etc.)
-4. Save and enable for your projects
+
+<Steps>
+  <Step title="Connect Servers">
+    Navigate to **Tools & MCP Page** and add the servers you need.
+  </Step>
+
+  <Step title="Enable for Projects">
+    Select which projects should have access to each MCP server.
+  </Step>
+
+  <Step title="Chat Naturally">
+    Your agent will automatically use MCP resources when they're relevant to your conversation. No special commands needed.
+  </Step>
+
+  <Step title="Monitor Activity">
+    Use the **Sources** tab to see which MCP servers were called and what data was accessed.
+  </Step>
+</Steps>
 
 ### Via API
-```typescript
-POST /api/mcp/add-server
-{
-  "name": "GitHub",
-  "command": "npx @modelcontextprotocol/server-github",
-  "env": {
-    "GITHUB_TOKEN": "ghp_..."
-  }
-}
-```
 
-## Using MCP Tools
+You can programmatically manage MCP servers through the API.
 
-Once connected, MCP tools appear in your agent's available tools. The AI automatically uses them when needed.
+Check the [MCP API Reference](/api-reference/mcp/add-server) for detailed documentation on:
+- Adding and removing servers
+- Managing server configurations
+- Enabling servers for projects
+- Monitoring server status
 
-See [API Reference](/api-reference/mcp/add-server) for details.
+The AI automatically determines when to use MCP resources based on the conversation context and available server capabilities.

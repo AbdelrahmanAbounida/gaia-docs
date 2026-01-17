@@ -4,40 +4,74 @@ description: "Deep dive on connecting different model providers"
 ---
 
 GAIA supports multiple AI providers through a unified interface.
+You will need 2 main AI Models in this setup 
+- AI Provider / LLM (Language model ): which will be used in chatting process
+- Emebdding Provider:  which will be used in Indexing process
 
-## Supported Providers
+## AI Provider Setup
 
-### Cloud Providers
-- **OpenAI** (GPT-4, GPT-3.5, etc.)
-- **Anthropic** (Claude models)
-- **Google** (Gemini)
-- **Azure OpenAI**
-- **Groq**
-- [See full list in API Reference](/api-reference/ai/get-providers)
+<Tabs>
+  <Tab title="Ollama (Local)">
 
-### Local Models
-- **Ollama** - Run models like Llama, Mistral locally
-- **LM Studio** - Use any GGUF model
-- **Custom Endpoints** - Any OpenAI-compatible API
+<Steps>
+  <Step title="Install Ollama">
+    Download from [ollama.com](https://ollama.com/download) and start the service:
 
-## Configuration
+    ```bash
+    ollama serve
+    ```
+  </Step>
 
-### Via UI
-Settings → AI Models → Select Provider → Enter credentials
+  <Step title="Configure in GAIA AI">
+    <img className="dark:hidden mx-auto" src="/images/ollama-view-light.png" alt="Ollama setup" style={{ width:"99%", borderRadius: "12px",  }} />
+    <img className="hidden dark:block" src="/images/ollama-view-dark.png" alt="Ollama setup" style={{ width:"99%", borderRadius: "12px",  }} />
 
-### Via API
-```typescript
-// Set model for a project
-POST /api/projects/{id}
-{
-  "model": "gpt-4",
-  "provider": "openai",
-  "credentials": { "apiKey": "sk-..." }
-}
-```
+    - Go to **Credentials → AI Providers**
+    - Select **Local Tab**
+    - Select **Ollama** provider
+    - Set URL:
+      - Local: `http://localhost:11434`
+      - Docker: `http://host.docker.internal:11434`
+    - pull your model (e.g., `llama3`)
+    - Done
+  </Step>
+</Steps>
 
-See [API Reference](/api-reference/ai/get-models) for full details.
+  </Tab>
+  
+  <Tab title="Cloud Providers">
 
-## Using Multiple Models
+**No installation needed!**
 
-You can switch models per project or per conversation. Each agent can use a different model.
+Simply get your API key from your preferred provider:
+- OpenAI
+- Anthropic
+- Google AI
+- And more...
+
+Add it in **Settings → AI Models**
+
+  </Tab>
+  
+  <Tab title="OpenAI-Compatible">
+
+**For LM Studio, vLLM, LocalAI, etc.**
+<div className="overflow-hidden">
+  <img 
+    className="dark:hidden mx-auto" 
+    src="/images/openai-view-light.png" 
+    alt="OpenAI-compatible setup" 
+    style={{ width:"100%", borderRadius: "12px", marginLeft:"10px" }} 
+  />
+</div>
+<img className="hidden dark:block" src="/images/openai-view-dark.png" alt="OpenAI-compatible setup" style={{ width:"99%", borderRadius: "12px",  }} />
+You'll need:
+- API URL
+- API Key (if required)
+
+Configure in **Settings → AI Models**
+
+  </Tab>
+</Tabs>
+
+Same process will be needed for embedding provider

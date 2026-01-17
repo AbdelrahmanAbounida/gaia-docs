@@ -1,54 +1,123 @@
 ---
 title: Knowledge & RAG
-description: "How to add knowledge and configure RAG"
+description: "Add knowledge to your agents with Retrieval-Augmented Generation"
 ---
 
-Add documents, websites, or databases to your agents using Retrieval-Augmented Generation.
+Add documents, websites, or databases to your agents using RAG (Retrieval-Augmented Generation).
 
-## Vector Stores
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full aspect-video rounded-2xl border h-[370px] border-[#e7e5e4] dark:hidden"
+  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3iEDDg2F1AUC60PVzJWx8qGr5ygcjX4BKDHnN3"
+/>
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full aspect-video rounded-xl h-[370px] hidden dark:block"
+  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3iUvQ5GZyda3fjcvP2yYEpFtToSei9hsxOLzKG"
+/> 
 
-Choose where to store embeddings:
+---
 
-### Local Options
-- **FAISS** - Fast, in-memory (default for local dev)
-- **LanceDB** - Persistent, serverless
+## Setup Your RAG Pipeline
 
-### Cloud Options
-- **Pinecone** - Managed, scalable
-- **Qdrant** - Self-hosted or cloud
+<Steps>
+  <Step title="Choose Vector Store Provider">
+    Select where to store your document embeddings:
 
-## Full-Text Search
+    <img className="dark:hidden mx-auto" src="/images/vectorstore-view-light.png" alt="Vector store options" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/vectorstore-view-dark.png" alt="Vector store options" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
 
-For keyword-based search:
-- **FlexSearch**
-- **MiniSearch**
-- **Orama**
+    ### Local Options
+    - **FAISS** - Fast, in-memory (default for local development)
+    - **LanceDB** - Persistent, serverless storage
 
-## Adding Knowledge
+    ### Cloud Options
+    - **Pinecone** - Managed, scalable vector database
+    - **Qdrant** - Self-hosted or cloud deployment
+    - **Weaviate** - GraphQL-based vector search
+
+    Go to **Settings → Vector Stores** to configure your provider.
+  </Step>
+
+  <Step title="Select Embedding Model">
+    Choose the embedding model that will convert your documents into vectors:
+
+    <img className="dark:hidden mx-auto" src="/images/embedding-view-light.png" alt="Embedding models" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/embedding-view-dark.png" alt="Embedding models" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+
+    **Local Options:**
+    - Ollama embeddings (nomic-embed-text, mxbai-embed-large)
+    
+    **Cloud Options:**
+    - OpenAI (text-embedding-3-small, text-embedding-3-large)
+    - Cohere (embed-english-v3.0, embed-multilingual-v3.0)
+    - Google (text-embedding-004)
+
+    Configure in **Settings → Embedding Models**
+  </Step>
+
+  <Step title="Configure RAG Settings">
+    Customize your knowledge retrieval settings:
+
+    <img className="dark:hidden mx-auto" src="/images/rag-light1.png" alt="RAG settings" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+    <img className="hidden dark:block" src="/images/rag-dark1.png" alt="RAG settings" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+
+    **Key Parameters:**
+    - **Chunk Size** - How to split documents (default: 1000 characters)
+    - **Chunk Overlap** - Overlap between chunks (default: 200 characters)
+    - **Top K** - Number of relevant chunks to retrieve (default: 5)
+    - **Similarity Threshold** - Minimum relevance score (0-1)
+
+    Access via **Project Settings → RAG Configuration**
+  </Step>
+
+  <Step title="Enable Full-Text Search (Optional)">
+    Add keyword-based search alongside vector search:
+
+    <img className="dark:hidden mx-auto" src="/images/rag-light2.png" alt="Full-text search settings" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+    <img className="hidden dark:block" src="/images/rag-dark2.png" alt="Full-text search settings" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4" }} />
+
+    **Available Options:**
+    - **FlexSearch** - Fast, flexible search
+    - **MiniSearch** - Lightweight, full-featured
+    - **Orama** - Typo-tolerant, fast indexing
+  </Step>
+</Steps>
+---
+## Adding Knowledge to Your Agent
 
 ### Via UI
-1. Go to your project → Knowledge tab
-2. Upload files (PDF, TXT, MD, DOCX)
-3. Or enter URLs to scrape
-4. GAIA automatically chunks and embeds
+
+<Steps>
+  <Step title="Navigate to Knowledge Tab">
+    Go to your project and click the **Knowledge** tab
+  </Step>
+
+  <Step title="Upload Content">
+    **Supported formats:**
+    - Documents: PDF, TXT, MD, DOCX, CSV
+    - Text: Enter Your Text
+
+    GAIA automatically chunks and embeds your content
+  </Step>
+
+  <Step title="Start Using">
+    Your agent can now reference this knowledge in conversations!
+  </Step>
+</Steps>
 
 ### Via API
-```typescript
-POST /api/knowledge/upload
-{
-  "projectId": "proj_123",
-  "file": <file>,
-  "chunkSize": 1000,
-  "chunkOverlap": 200
-}
-```
 
-## Advanced Configuration
+You can check api reference here [Knowledge API Reference](/api-reference/knowledge/upload)
 
-Customize RAG parameters:
-- **Chunk size** - How to split documents
-- **Top K** - Number of results to retrieve
-- **Similarity threshold** - Minimum relevance score
-- **Embedding model** - Which model to use for embeddings
+---
 
-See [API Reference](/api-reference/knowledge/upload) for all options.
+**Next Steps:** 
+- [Create Custom Tools](/features/tools) to enhance your agent's capabilities
+- [API Reference](/api-reference/knowledge/upload) for detailed API documentation

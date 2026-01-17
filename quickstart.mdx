@@ -1,203 +1,147 @@
 ---
 title: Quick Start
-description: "Get started with GAIA AI in minutes using either pnpm or Docker."
+description: "Get started with GAIA AI in minutes"
 ---
-## Choose Your AI Model
+
+## Installation
+
+Choose your preferred method to run GAIA AI locally:
 
 <Tabs>
-  <Tab title="Local (Ollama)">
-    **Prerequisites:** [Install Ollama](https://ollama.ai) and pull a model:
-```bash
-    ollama pull llama3
-```
+  <Tab title="Docker (Recommended)">
     
-    **In GAIA:**
-    1. Go to Settings → AI Models
-    2. Select "Ollama" provider
-    3. Choose your model (e.g., llama3)
-    4. Save
+<Steps>
+  <Step title="Requirements">
+    - Git
+    - Docker & Docker Compose ([Install here](https://docs.docker.com/get-docker/))
+  </Step>
+
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/AbdelrahmanAbounida/GAIA-AI.git
+    cd GAIA-AI
+    ```
+  </Step>
+
+  <Step title="Start GAIA AI">
+    ```bash
+    docker-compose up
+    ```
+  </Step>
+
+  <Step title="Open your browser">
+    Go to `http://localhost:5679`
+  </Step>
+</Steps>
+
   </Tab>
   
-  <Tab title="Cloud (OpenAI, Anthropic, etc.)">
-    **Prerequisites:** API key from your provider
-    
-    **In GAIA:**
-    1. Go to Settings → AI Models
-    2. Select your provider (OpenAI, Anthropic, Google, etc.)
-    3. Enter your API key
-    4. Choose a model
-    5. Save
-  </Tab>
-  
-  <Tab title="Custom OpenAI-Compatible">
-    **For:** LM Studio, vLLM, or any OpenAI-compatible endpoint
-    
-    **In GAIA:**
-    1. Go to Settings → AI Models
-    2. Select "Custom OpenAI Compatible"
-    3. Enter base URL (e.g., `http://localhost:1234/v1`)
-    4. Enter API key (if required)
-    5. Choose/enter model name
-    6. Save
+  <Tab title="Local Development">
+
+<Steps>
+  <Step title="Requirements">
+    - Node.js 18+
+    - pnpm
+  </Step>
+
+  <Step title="Clone and install">
+    ```bash
+    git clone https://github.com/AbdelrahmanAbounida/GAIA-AI.git
+    cd GAIA-AI
+    pnpm install
+    ```
+  </Step>
+
+  <Step title="Setup database">
+    ```bash
+    cd packages/db
+    pnpm run generate
+    pnpm run migrate
+    cd ../..
+    ```
+  </Step>
+
+  <Step title="Start development server">
+    ```bash
+    pnpm run dev
+    ```
+  </Step>
+
+  <Step title="Open your browser">
+    Go to `http://localhost:3000`
+  </Step>
+</Steps>
+
   </Tab>
 </Tabs>
 
-## Create Your First Agent
+---
 
-1. **Create Project:** Click "New Project" and name it (e.g., "My Assistant")
-2. **Add Knowledge (Optional):** Upload documents in the Knowledge tab
-3. **Add Tools (Optional):** Connect APIs or enable built-in tools
-4. **Chat:** Start chatting with your agent!
+## Create Your First Project
 
+<Steps>
+  <Step title="Create Your Account"  titleSize="h3">
+    <img className="dark:hidden mx-auto" src="/images/create-account-light.png" alt="Create account" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/create-account-dark.png" alt="Create account" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+  </Step>
 
-## Prerequisites
+  <Step title="Set Up Your Project Components"  titleSize="h3">
+    <img className="dark:hidden mx-auto" src="/images/new-project-light.png" alt="new Project" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/new-project-dark.png" alt="new Project" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+    
+    You'll need three components:
 
-- **Node.js** 18+
-- **pnpm** or **Docker**
-- **Git**
+    **1. AI Provider** 
+    <img className="dark:hidden mx-auto" src="/images/aiproviders-light-view.png" alt="AI providers" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/aiproviders-dark-view.png" alt="AI providers" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
 
-## Option 1: Install with pnpm
+    Choose between:
+    - **Local:** Ollama or openai compatible models
+    - **Cloud:** OpenAI, Anthropic, Google, etc.
 
-```bash
-# Clone the repository
-git clone https://github.com/AbdelrahmanAbounida/GAIA-AI.git
+    **2. Embedding Provider**
+    <img className="dark:hidden mx-auto" src="/images/embedding-view-light.png" alt="Embedding providers" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/embedding-view-dark.png" alt="Embedding providers" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
 
-# Navigate to project directory
-cd GAIA-AI
+    Choose between:
+    - **Local:** Ollama embeddings
+    - **Cloud:** OpenAI, Cohere, etc.
 
-# Install dependencies
-pnpm install
+    **3. Vector Store**
+    <img className="dark:hidden mx-auto" src="/images/vectorstore-view-light.png" alt="Vector stores" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/vectorstore-view-dark.png" alt="Vector stores" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
 
-# migrate the database Tables
-cd packages/db
-pnpm run migrate
+    Choose between:
+    - **Local:** Faiss, LanceDB
+    - **Cloud:** Pinecone, Weaviate, etc.
+  </Step>
 
-# Start the development server (in root folderdit .env to add y)
-pnpm run dev
-```
+  <Step title="Build Your Agent"  titleSize="h3">
+    Customize your agent with:
 
-The application will be available at `http://localhost:3000`
+    **1. Add Knowledge** ([Learn more](/features/knowledge-rag))
+    Upload and index documents for your agent to reference.
 
-## Option 2: Run with Docker
+    **2. Create Tools** ([Learn more](/features/tools))
+    Design custom functions your agent can execute.
 
-```bash
-# Clone the repository
-git clone https://github.com/AbdelrahmanAbounida/GAIA-AI.git
+    **3. Connect MCPs** ([Learn more](/features/mcp))
+    Integrate and connect with external [MCPs](https://modelcontextprotocol.io/docs/getting-started/intro) and protocols.
+  </Step>
 
-# Navigate to project directory
-cd GAIA-AI
+  <Step title="Start Using Your Agent"  titleSize="h3">
+    **Chat Interface:**
+    <img className="dark:hidden mx-auto" src="/images/chat-light.png" alt="Chat interface" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/chat-dark.png" alt="Chat interface" style={{ width:"99%", borderRadius: "12px", margin: "10px" }} />
 
-# Start with Docker Compose
-docker-compose up
-```
-
-The application will be available at `http://localhost:3000`
-
-
-
+    **Or integrate via SDK:** ([View integrations](/integration/overview))
+    - OpenAI SDK
+    - Vercel AI SDK  
+    - REST API
+  </Step>
+</Steps>
 
 ---
-title: "Docker"
----
-# Docker Deployment
 
-Deploy GAIA in production using Docker.
 
-## Quick Start
-```bash
-docker run -p 3000:3000 \
-  -e OPENAI_API_KEY=sk-... \
-  gaiaai/gaia:latest
-```
-
-## Docker Compose
-```yaml
-version: '3.8'
-
-services:
-  gaia:
-    image: gaiaai/gaia:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://...
-      - REDIS_URL=redis://...
-    volumes:
-      - ./data:/app/data
-    restart: unless-stopped
-```
-
-# Environment Variables
-
-Configure GAIA through environment variables.
-
-## Core Settings
-```bash
-NODE_ENV=production          # production | development
-PORT=3000                    # Server port
-HEADLESS=false              # true for API-only mode
-```
-
-## AI Providers
-```bash
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-GOOGLE_API_KEY=...
-```
-
-## Database
-```bash
-DATABASE_URL=postgresql://user:pass@host:5432/db
-```
-
-## Vector Stores
-```bash
-# Pinecone
-PINECONE_API_KEY=...
-PINECONE_ENVIRONMENT=us-east-1
-
-# Qdrant
-QDRANT_URL=http://localhost:6333
-QDRANT_API_KEY=...
-```
-
-## Storage
-```bash
-# For file uploads
-STORAGE_PATH=./data
-MAX_UPLOAD_SIZE=10mb
-```
-
-## Authentication
-```bash
-JWT_SECRET=your-secret-key
-API_KEY_PREFIX=gaia_
-```
-
-## Example .env
-```bash
-NODE_ENV=production
-PORT=3000
-OPENAI_API_KEY=sk-...
-DATABASE_URL=postgresql://...
-PINECONE_API_KEY=...
-JWT_SECRET=random-secret
-```
-
-Copy `.env.example` and customize for your setup.
-
-## Persistence
-
-Mount volumes for:
-- `/app/data` - Local vector stores, file uploads
-- `/app/logs` - Application logs
-
-## Scaling
-
-For multiple instances, use external:
-- **Database** (PostgreSQL)
-- **Vector Store** (Pinecone, Qdrant)
-- **Cache** (Redis)
-
-Configure via environment variables.
+**Next Steps:** Check out the [Features](/features) to explore everything GAIA AI can do!

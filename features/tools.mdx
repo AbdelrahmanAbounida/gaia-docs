@@ -1,59 +1,215 @@
 ---
-title: Tools Design
-description: "Creating and using tools"
+title: Tools
+description: "Extend your agents with custom capabilities and integrations"
 ---
 
-Give your agents abilities to perform actions like calling APIs, querying databases, or running code.
+Give your agents the ability to take actions—from calling external APIs and querying databases to running custom business logic. Tools transform your agents from conversational assistants into powerful automation platforms.
 
-## Built-in Tools
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full aspect-video rounded-2xl border h-[370px] border-[#e7e5e4] dark:hidden"
+  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3ieWhUFBj1JMs3QDgVqivHtNyXh6muzU7w2EPb"
+/>
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full aspect-video rounded-xl h-[370px] hidden dark:block"
+  src="https://a62edz1qni.ufs.sh/f/zshoAVKVBR3imHQhsN4COuJSheAYxBzcQVo1ZpRajLw6dP3C"
+/>
 
-GAIA includes ready-to-use tools:
-- Web search
-- Calculator
-- File operations
-- Email sending
-- [See all built-in tools]
+---
 
-## Custom Tools
+## What Are Tools?
 
-Create tools in TypeScript:
+Tools are functions that your AI agent can call to perform specific tasks. They enable your agent to:
+
+- **Integrate with external services** - Connect to APIs, databases, CRMs, and third-party platforms
+- **Perform computations** - Run calculations, data analysis, or custom algorithms
+- **Take actions** - Send emails, create tickets, update records, or trigger workflows
+- **Access real-time data** - Fetch live information from the web, databases, or internal systems
+
+The AI automatically decides when and how to use tools based on the conversation context, making your agents truly capable of getting work done.
+
+<Note>
+  **Learn More:** For detailed information on tool design patterns and best practices, check out the [OpenAI Tool Use Guide](https://platform.openai.com/docs/guides/tools).
+</Note>
+
+---
+
+
+With tools, you can create sophisticated applications and give your agents access to virtually any capability:
+
+- **Data Analysis Dashboards** - Query databases, process data, generate visualizations
+- **Customer Support Automation** - Integrate with ticketing systems, CRMs, knowledge bases
+- **DevOps Assistants** - Deploy code, monitor systems, manage infrastructure
+- **E-commerce Agents** - Process orders, check inventory, handle refunds
+- **Research Assistants** - Search academic databases, summarize papers, track citations
+- **Financial Tools** - Fetch stock prices, calculate metrics, generate reports
+
+The only limit is your imagination and the APIs you connect to.
+
+---
+
+## Setup Your Tools
+<Warning>
+  **Note** In the current version of GAIA, custom tools are defined in TypeScript. The next version of GAIA will include a local sandbox environment where you can define tools in multiple programming languages including Python, Go, and more. This will enable use cases like building data analysis tools with pandas, scientific computing with NumPy, or specialized libraries in other languages.
+</Warning>
+
+<Steps>
+  <Step title="Navigate to Tools Tab">
+    Go to your project and click the **Tools** tab to view and manage your tools.
+
+    <img className="dark:hidden mx-auto" src="/images/tool-code-light.png" alt="Tools interface" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/tool-code-dark.png" alt="Tools interface" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+  </Step>
+
+  <Step title="Create or Enable Tools">
+    **Option 1: Use Built-in Tools**
+    
+    GAIA includes ready-to-use tools for common tasks:
+    - Web search and scraping
+    - Mathematical calculations
+    - File operations (read/write)
+    - Email sending
+    - Date and time utilities
+    
+    Simply toggle them on to make them available to your agent.
+
+    **Option 2: Create Custom Tools**
+    
+    Write your own tools in TypeScript to connect to any service or implement custom logic.
+  </Step>
+
+  <Step title="Test Your Tools">
+    Once enabled, test your tools directly in the chat interface:
+
+    <img className="dark:hidden mx-auto" src="/images/chat-tool-light.png" alt="Testing tools in chat" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/chat-tool-dark.png" alt="Testing tools in chat" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+
+    Your agent will automatically use tools when needed based on the conversation.
+  </Step>
+
+  <Step title="View Tool Calls">
+    Check the **Sources** tab to see exactly how your agent called each tool, including parameters and responses:
+
+    <img className="dark:hidden mx-auto" src="/images/chat-tool-sources-light.png" alt="Tool sources view" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+    <img className="hidden dark:block" src="/images/chat-tool-sources-dark.png" alt="Tool sources view" style={{ width:"99%", borderRadius: "8px", border: "1px solid #e7e5e4", margin: "10px" }} />
+
+    This transparency helps you debug and understand your agent's decision-making process.
+  </Step>
+</Steps>
+
+---
+
+## Creating Custom Tools
+
+Let's Create a demo Tool that will allow your AI Agent to be able to know the current Weather of specific city
+
 ```typescript
-// tools/weather.ts
-export default {
-  name: "get_weather",
-  description: "Get current weather for a location",
-  parameters: {
-    type: "object",
-    properties: {
-      location: { type: "string" }
-    },
-    required: ["location"]
-  },
-  execute: async ({ location }) => {
-    const res = await fetch(`https://api.weather.com?q=${location}`);
-    return await res.json();
+async function getCurrentWeather(
+  city: string
+): Promise<{
+  temperature: number;
+  humidity: number;
+  windSpeed: number;
+  weatherDescription: string;
+}> {
+  const getWeatherDescription = (code: number): string => {
+    const descriptions: { [key: number]: string } = {
+      0: "Clear sky",
+      1: "Mainly clear",
+      2: "Partly cloudy",
+      3: "Overcast",
+      45: "Foggy",
+      48: "Depositing rime fog",
+      51: "Light drizzle",
+      53: "Moderate drizzle",
+      55: "Dense drizzle",
+      56: "Light freezing drizzle",
+      57: "Dense freezing drizzle",
+      61: "Slight rain",
+      63: "Moderate rain",
+      65: "Heavy rain",
+      66: "Light freezing rain",
+      67: "Heavy freezing rain",
+      71: "Slight snow",
+      73: "Moderate snow",
+      75: "Heavy snow",
+      77: "Snow grains",
+      80: "Slight rain showers",
+      81: "Moderate rain showers",
+      82: "Violent rain showers",
+      85: "Slight snow showers",
+      86: "Heavy snow showers",
+      95: "Thunderstorm",
+      96: "Thunderstorm with slight hail",
+      99: "Thunderstorm with heavy hail"
+    };
+    return descriptions[code] || "Unknown";
+  };
+
+  try {
+    const geocodeUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+      city
+    )}&count=1`;
+
+    const geoRes = await fetch(geocodeUrl);
+    if (!geoRes.ok) throw new Error("Failed to fetch geocoding data");
+
+    const geoData = await geoRes.json();
+    if (!geoData.results || geoData.results.length === 0) {
+      throw new Error("City not found");
+    }
+
+    const { latitude, longitude } = geoData.results[0];
+
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code`;
+
+    const weatherRes = await fetch(weatherUrl);
+    if (!weatherRes.ok) throw new Error("Failed to fetch weather data");
+
+    const weatherData = await weatherRes.json();
+    const current = weatherData.current;
+
+    return {
+      temperature: current.temperature_2m,
+      humidity: current.relative_humidity_2m,
+      windSpeed: current.wind_speed_10m,
+      weatherDescription: getWeatherDescription(current.weather_code)
+    };
+  } catch (error: any) {
+    throw new Error(error.message || "Unexpected error occurred");
   }
 }
 ```
 
+---
+
 ## Using Tools
 
 ### Via UI
-1. Go to your project → Tools tab
-2. Enable built-in tools or upload custom ones
-3. Your agent can now call these tools
+
+<Steps>
+  <Step title="Enable Tools">
+    Navigate to your project's **Tools** tab and enable the tools you want to use.
+  </Step>
+
+  <Step title="Chat with Your Agent">
+    Start a conversation. Your agent will automatically use tools when appropriate.
+  </Step>
+
+  <Step title="Monitor Tool Usage">
+    Check the **Sources** tab in the chat to see which tools were called and their results.
+  </Step>
+</Steps>
 
 ### Via API
-```typescript
-POST /api/tools/create
-{
-  "projectId": "proj_123",
-  "name": "get_weather",
-  "schema": { ... },
-  "code": "..."
-}
-```
 
-The AI automatically decides when to use tools based on the conversation.
-
-See [API Reference](/api-reference/tools/create) for details.
+You can programmatically create and manage tools:
+You can check api reference here [Tools API Reference](/api-reference/tools/create)
+The AI automatically determines when to use tools based on the conversation context and tool descriptions.
